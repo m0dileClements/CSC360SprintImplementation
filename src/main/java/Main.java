@@ -25,7 +25,9 @@ public class Main
 	}
 	
 	public static void main(String[] args)
-	{
+	{}
+	
+	public void launch() {
 		Main main = new Main();
 		ArrayListConverter converter = new ArrayListConverter();
 		converter.clearData(main);
@@ -33,7 +35,7 @@ public class Main
 //		RestServerConverter converter = new RestServerConverter();
 //		converter.clearData(main);
 //		converter.loadData(main);
-
+		
 	}
 	
 	//returns a list of all of the previous semesters marked final

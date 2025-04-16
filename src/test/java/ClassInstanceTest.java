@@ -77,6 +77,11 @@ class ClassInstanceTest
 		assertEquals(3.0, classInstance1.getClassLength());
 		assertEquals("1:15PM", classInstance1.getStartTime());
 		assertEquals("2:15PM", classInstance1.getEndTime());
+		
+		classInstance1.setClassTime("MWF 1:15PM - 2:15PM");
+		assertEquals(3.0, classInstance1.getClassLength());
+		assertEquals("1:15PM", classInstance1.getStartTime());
+		assertEquals("2:15PM", classInstance1.getEndTime());
 	}
 
 	@Test
@@ -138,19 +143,19 @@ class ClassInstanceTest
 	@Test
 	void testGetInstructor()
 	{
-		classInstance1.getInstructor().getHours(termTest);
+		classInstance1.getInstructor().getTermHours(termTest);
 		assertEquals("Instructor [name=Allison Conelly, profDept=French, hours=0.0]", classInstance1.getInstructor().toString());
 	}
 
 	@Test
 	void testSetInstructor()
 	{
-		classInstance1.getInstructor().getHours(termTest);
+		classInstance1.getInstructor().getTermHours(termTest);
 		assertEquals("Instructor [name=Allison Conelly, profDept=French, hours=0.0]", classInstance1.getInstructor().toString());
 		
 		Instructor newProf = new Instructor("Christian Wood", deptTest);
 		classInstance1.setInstructor(newProf);
-		classInstance1.getInstructor().getHours(termTest);
+		classInstance1.getInstructor().getTermHours(termTest);
 		assertEquals("Instructor [name=Christian Wood, profDept=French, hours=0.0]", classInstance1.getInstructor().toString());
 		
 	}
@@ -221,6 +226,16 @@ class ClassInstanceTest
 		assertEquals(true, classInstance1.getHasFalseLimit());
 		classInstance1.resetFalseLimit();
 		assertEquals(false, classInstance1.getHasFalseLimit());
+	}
+	
+	@Test 
+	void testToString(){
+		assertEquals("ClassInstance [course=FRE270: Group Conversation, Tags: E3, L, "
+				+ "term=Term [semester=Spring, year=2025], instructor=Instructor [name=Allison Conelly, profDept=French, hours=0.0], "
+				+ "classTime=TR 9:40AM - 12:10PM, room=Crounse 307, dept=Alison Conelly: French, classLength=5.0, hasFalseLimit=false]", classInstance1.toString());
+		
+		
+	
 	}
 
 }

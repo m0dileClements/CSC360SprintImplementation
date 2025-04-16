@@ -129,6 +129,19 @@ class MainTest
 		main.addClassInstance(class4);
 	}
 
+	@Test
+	void testLaunch()
+	{
+		main.launch();
+		assertEquals(3, main.getAllTerms().size());
+		assertEquals(4, main.getAllDepts().size());
+		assertEquals(4, main.getAllCourses().size());
+		assertEquals(4, main.getAllClasses().size());
+		assertEquals(3, main.getAllInstructors().size());
+		assertEquals(3, main.getAllRooms().size());
+		
+	}
+	
 
 	@Test
 	void testGetAllPreviousTerms()
@@ -350,5 +363,10 @@ class MainTest
 		
 	}
 	
+	@Test
+	void testGetCurrentUser()
+	{
+		assertEquals("Registrar= Jacob Johnson", main.getCurrentUser());
+	}
 
 }

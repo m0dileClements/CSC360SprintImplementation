@@ -29,10 +29,10 @@ public class User
 	public String toString()
 	{
 		if(role == "") {
-			return ("No User Type Inputted: " + name);
+			return ("No User Type Inputted= " + name);
 		}
 		else {
-			return (role + ": " + name);
+			return (role + "= " + name);
 		}
 	}
 

@@ -24,10 +24,17 @@ class UserTest
 	@Test
 	void testToString()
 	{
-		String userType = u.toString();
-		assertEquals("No User Type Inputted: Billy Bob", userType);
+		assertEquals("No User Type Inputted= Billy Bob", u.toString());
+		u.setRole("Special User");
+		assertEquals("Special User= Billy Bob", u.toString());
 	}
 
+	@Test
+	void testGetRole()
+	{
+		assertEquals("", u.getRole());
+		
+	}
 	@Test
 	void testCanReadGeneralInfo()
 	{
@@ -43,7 +50,7 @@ class UserTest
 	}
 	
 	@Test
-	void testCcanEdit()
+	void testCanEdit()
 	{
 		assertEquals(false, u.getCanEdit());
 		
@@ -62,5 +69,86 @@ class UserTest
 		assertEquals(false, u.getCanDelete());
 		
 	}
+	
+	@Test
+	void testSetCanReadGeneralInfo()
+	{
+		assertEquals(true, u.getCanReadGeneralInfo());
+		u.setCanReadGeneralInfo(false);
+		assertEquals(false, u.getCanReadGeneralInfo());
+	}
+	
+	@Test
+	void testSetCanReadPendingInfo()
+	{
+		assertEquals(false, u.getCanReadPendingInfo());
+		u.setCanReadPendingInfo(true);
+		assertEquals(true, u.getCanReadPendingInfo());
+	}
+	
+	@Test
+	void testSetCanEdit()
+	{
+		assertEquals(false, u.getCanEdit());
+		u.setCanEdit(true);
+		assertEquals(true, u.getCanEdit());
+		
+	}
 
+	@Test
+	void testSetCanCreate()
+	{
+		assertEquals(false, u.getCanCreate());
+		u.setCanCreate(true);
+		assertEquals(true, u.getCanCreate());
+		
+	}
+
+	@Test
+	void testSetCanDelete()
+	{
+		assertEquals(false, u.getCanDelete());
+		u.setCanDelete(true);
+		assertEquals(true, u.getCanDelete());
+		
+	}
+	@Test
+	void testGetName()
+	{
+		assertEquals("Billy Bob", u.getName());
+	}
+	
+	@Test
+	void testSetName()
+	{
+		assertEquals("Billy Bob", u.getName());
+		u.setName("Jim Bob");
+		assertEquals("Jim Bob", u.getName());
+	}
+	@Test
+	void testGetUsername()
+	{
+		assertEquals("bBob", u.getUsername());
+	}
+	
+	@Test
+	void testSetUsername()
+	{
+		assertEquals("bBob", u.getUsername());
+		u.setUsername("C00lGuy");
+		assertEquals("C00lGuy", u.getUsername());
+	}
+	@Test
+	void testGetPassword()
+	{
+		assertEquals("IL0veCats", u.getPassword());
+	}
+	
+	@Test
+	void testSetPassword()
+	{
+		assertEquals("IL0veCats", u.getPassword());
+		u.setPassword("IL0veDogs");
+		assertEquals("IL0veDogs", u.getPassword());
+	}
 }

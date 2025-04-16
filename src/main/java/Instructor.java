@@ -15,7 +15,7 @@ public class Instructor
 	}
 	
 	//calculates the hours an instructor completes over a term by adding all of their class lengths
-	public double getHours(Term term) {
+	public double getTermHours(Term term) {
 		ArrayList<ClassInstance> termClasses = term.getAllClasses();
 		double hoursInSemester = 0;
 		

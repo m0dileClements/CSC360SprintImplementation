@@ -212,5 +212,24 @@ class CourseTest
 				+ "Constraint [constraintName=The first one but switched, class1=Software Design, class2=Group Conversation] ", constraintTester);
 		
 	}
+	
+	@Test
+	void testAddTags() {
+		assertEquals(2, classInstance1.getCourse().getTags().size());
+		classInstance1.getCourse().addTags("A");
+		assertEquals(3, classInstance1.getCourse().getTags().size());
+		assertEquals("A", classInstance1.getCourse().getTags().get(2));
+
+	}
+	
+	@Test
+	void testRemoveTags() {
+		assertEquals(2, classInstance1.getCourse().getTags().size());
+		assertEquals("E3", classInstance1.getCourse().getTags().get(0));
+		classInstance1.getCourse().removeTags("E3");
+		assertEquals(1, classInstance1.getCourse().getTags().size());
+		assertEquals("L", classInstance1.getCourse().getTags().get(0));
+	}
+	
 
 }

@@ -140,7 +140,7 @@ class ArrayListConverterTest
 		assertEquals(4, main.getAllClasses().size());
 		assertEquals(3, main.getAllInstructors().size());
 		assertEquals(3, main.getAllRooms().size());
-		assertEquals("No User Type Inputted: Rando McRando", main.getCurrentUser().toString());
+		assertEquals("No User Type Inputted= Rando McRando", main.getCurrentUser().toString());
 		
 		converter.clearData(main);
 		
