@@ -28,12 +28,10 @@ class MainTest
 	{	
 		main = new Main();
 		currentUser = new Registrar("Jacob Johnson", " ", " ");
-		main.setCurrentUser(currentUser);
+		
 		DepartmentHead userDeptHead = new DepartmentHead("Michael Bradshaw", "CSDeptHead", "dragonsAreCool");
 		Department userHolder = new Department(userDeptHead, "CSC");
 		userDeptHead.setDepartment(userHolder);
-		
-		
 		
 		
 		main = new Main();
@@ -366,7 +364,9 @@ class MainTest
 	@Test
 	void testGetCurrentUser()
 	{
-		assertEquals("Registrar= Jacob Johnson", main.getCurrentUser());
+		main.setCurrentUser(currentUser);
+		assertEquals("Registrar= Jacob Johnson", main.getCurrentUser().toString());
 	}
+	
 
 }
