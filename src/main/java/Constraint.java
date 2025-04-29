@@ -1,15 +1,18 @@
+import java.util.ArrayList;
 
-
-public class Constraint
+public abstract class Constraint
 {
+	Term term;
 	String constraintName;
-	ClassInstance class1;
-	ClassInstance class2;
+	ArrayList<ClassInstance> classes;
 	
-	public Constraint (String desc, ClassInstance c1, ClassInstance c2) {
+	public Constraint(Term term, String desc, ArrayList<ClassInstance> constrained) {
+		this.term = term;
 		this.constraintName = desc;
-		this.class1 = c1;
-		this.class2 = c2;
+		classes = new ArrayList<ClassInstance>();
+		for(int i = 0; i < constrained.size(); i++) {
+			this.classes.add(constrained.get(i));
+		}
 	}
 	public void modifyDescription(String newDescription, User u) {
 		if (u.getCanEdit()) {
@@ -19,9 +22,9 @@ public class Constraint
 	
 	public void modifyConstraint(Constraint constraint, User u) {
 		if (u.getCanEdit()) {
-			this.constraintName = constraint.constraintName;
-			this.class1 = constraint.class1;
-			this.class2 = constraint.class2;
+			this.term = constraint.getTerm();
+			this.constraintName = constraint.getConstraintName();
+			this.classes = constraint.getClasses();
 		}
 	}
 
@@ -34,20 +37,46 @@ public class Constraint
 	{
 		return constraintName;
 	}
-	
-	public ClassInstance getClass1() {
-		return class1;
-	}
-	
-	public ClassInstance getClass2() {
-		return class2;
-	}
 
-	@Override
-	public String toString()
+	public abstract Boolean evaluateConstraint();
+	
+	/**
+	 * @return the term
+	 */
+	public Term getTerm()
 	{
-		return "Constraint [constraintName=" + constraintName + ", class1=" + class1.getCourse().getTitle() + ", class2=" + class2.getCourse().getTitle() + "]";
+		return term;
 	}
+	/**
+	 * @param term the term to set
+	 */
+	public void setTerm(Term term)
+	{
+		this.term = term;
+	}
+	/**
+	 * @return the classes
+	 */
+	public ArrayList<ClassInstance> getClasses()
+	{
+		return classes;
+	}
+	/**
+	 * @param classes the classes to set
+	 */
+	public void setClasses(ArrayList<ClassInstance> classes)
+	{
+		this.classes = classes;
+	}
+	/**
+	 * @param constraintName the constraintName to set
+	 */
+	public void setConstraintName(String constraintName)
+	{
+		this.constraintName = constraintName;
+	}
+	
+	
 	
 	
 }

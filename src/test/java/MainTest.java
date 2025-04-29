@@ -366,7 +366,8 @@ class MainTest
 	@Test
 	void testGetCurrentUser()
 	{
-		assertEquals("Registrar= Jacob Johnson", main.getCurrentUser());
+		main.setCurrentUser(currentUser);
+		assertEquals("Registrar= Jacob Johnson", main.getCurrentUser().toString());
 	}
 
 }

@@ -7,7 +7,6 @@ public class Course
 	String courseCode;
 	String title;
 	ArrayList<String> tags;
-	ArrayList<Constraint> constraints;
 	ArrayList<String> crossListings;
 	
 	public Course(String courseCode, String title, ArrayList<String> GETags) {
@@ -15,29 +14,17 @@ public class Course
 		this.title = title;
 		this.tags = GETags;
 		//this.hasFalseLimit = false;
-		this.constraints = new ArrayList<Constraint>();
+		
 		this.crossListings = new ArrayList<String>();
-		
-	}
+	}	
 	
-	
-	public void modifyCrossCourseCodes(String listing1, String listing2) {
-		crossListings.remove(listing1);
-		crossListings.add(listing2);
-		
-	}
-	
-	public void createCourseConstraint(String desc, ClassInstance class1, ClassInstance class2) {
-		Constraint newCourse = new Constraint(desc, class1, class2);
-		constraints.add(newCourse);
-	}
-	
-	public void removeConstraint(Constraint constraint) {
-		for(int i = 0; i<constraints.size(); i++) {
-			if(constraints.get(i).toString().equals(constraint.toString())) {
-				constraints.remove(i);
-			}
+	public void modifyCrossCourseCodes(ArrayList<String> crossListingsReplacement) {
+		crossListings.clear();
+		for (int i = 0; i < crossListingsReplacement.size(); i++) {
+			crossListings.add(crossListingsReplacement.get(i));
 		}
+		
+		
 	}
 	
 	//Getter and Setter methods for all relevant variables
@@ -122,18 +109,12 @@ public class Course
 		this.crossListings = crossListings;
 	}
 	
-	public void createCrossListing(String listing1) {
-		this.crossListings.add(listing1);
+	public void createCrossListing(ArrayList<String> listings) {
+		for(int i = 0; i < listings.size(); i++) {
+			crossListings.add(listings.get(i));
+		}
 	}
 
-
-	/**
-	 * @return the constraints
-	 */
-	public ArrayList<Constraint> getConstraints()
-	{
-		return constraints;
-	}
 	
 	//toString method
 	public String toString() {

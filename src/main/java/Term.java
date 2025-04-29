@@ -8,6 +8,7 @@ public class Term
 	int year;
 	ArrayList<ClassInstance> allClasses;
 	Boolean isFinalized;
+	ArrayList<Constraint> constraints;
 	
 	public Term() {}
 	
@@ -16,6 +17,7 @@ public class Term
 		this.year = year;
 		this.allClasses = new ArrayList<ClassInstance>();
 		this.isFinalized = false;
+		this.constraints = new ArrayList<Constraint>();
 		
 	}
 	
@@ -127,21 +129,22 @@ public class Term
 			for (int j = 0; j< roomsClasses.size(); j++) {
 				for(int m= j; m< roomsClasses.size(); m++) {
 					
-					Boolean isSameTime = roomsClasses.get(j).getClassTime().toString().equals(roomsClasses.get(m).getClassTime().toString());
-					Boolean endsDuring = false;
-					Boolean startsDuring = false;
-					Boolean isSameDay = hasOverlappingDays(roomsClasses.get(j).getClassTime(), roomsClasses.get(m).getClassTime());
+//					checkTimeConflict
+//					Boolean isSameTime = roomsClasses.get(j).getClassTime().toString().equals(roomsClasses.get(m).getClassTime().toString());
+//					Boolean endsDuring = false;
+//					Boolean startsDuring = false;
+//					Boolean isSameDay = hasOverlappingDays(roomsClasses.get(j).getClassTime(), roomsClasses.get(m).getClassTime());
+//					
+//					if((checkIsTimeBefore(roomsClasses.get(j).getEndTime(), roomsClasses.get(m).getEndTime()) && checkIsTimeBefore(roomsClasses.get(m).getStartTime(), roomsClasses.get(j).getEndTime())) || roomsClasses.get(m).getStartTime().equals(roomsClasses.get(j).getStartTime())) {
+//						endsDuring = true;
+//					}
+//					
+//					if((checkIsTimeBefore(roomsClasses.get(m).getStartTime(), roomsClasses.get(j).getStartTime()) && checkIsTimeBefore(roomsClasses.get(j).getStartTime(), roomsClasses.get(m).getEndTime())) || roomsClasses.get(m).getEndTime().equals(roomsClasses.get(j).getEndTime())) {
+//						startsDuring = true;
+//					}
 					
-					if((checkIsTimeBefore(roomsClasses.get(j).getEndTime(), roomsClasses.get(m).getEndTime()) && checkIsTimeBefore(roomsClasses.get(m).getStartTime(), roomsClasses.get(j).getEndTime())) || roomsClasses.get(m).getStartTime().equals(roomsClasses.get(j).getStartTime())) {
-						endsDuring = true;
-					}
 					
-					if((checkIsTimeBefore(roomsClasses.get(m).getStartTime(), roomsClasses.get(j).getStartTime()) && checkIsTimeBefore(roomsClasses.get(j).getStartTime(), roomsClasses.get(m).getEndTime())) || roomsClasses.get(m).getEndTime().equals(roomsClasses.get(j).getEndTime())) {
-						startsDuring = true;
-					}
-					
-					
-					if(m != j && (isSameTime || endsDuring || startsDuring) && isSameDay) {
+					if(m != j && (checkTimeConflict(roomsClasses.get(m),roomsClasses.get(j)) )) {
 						if(!timeRoomConflicts.contains(roomsClasses.get(j))) {
 							timeRoomConflicts.add(roomsClasses.get(j));
 						}
@@ -157,34 +160,72 @@ public class Term
 		return timeRoomConflicts;
 	}
 	
+	public Boolean checkTimeConflict(ClassInstance class1, ClassInstance class2) {
+		Boolean haveConflicts = false;
+		
+		Boolean isSameTime = class1.getClassTime().toString().equals(class2.getClassTime().toString());
+		Boolean endsDuring = false;
+		Boolean startsDuring = false;
+		Boolean isSameDay = hasOverlappingDays(class1.getClassTime(), class2.getClassTime());
+		
+		//if class1 is before class 2 
+		//class 1 starts before class 2 ends
+		Boolean class1EndsBefore2 = checkIsTimeBefore(class1.getStartTime(), class2.getEndTime());
+		//class 2 ends before class 1 ends
+		Boolean class2EndsBeforeClass1Start = checkIsTimeBefore(class2.getEndTime(), class1.getEndTime());
+		Boolean endAtSameTime = class2.getStartTime().equals(class1.getStartTime());
+		if((class1EndsBefore2 && class2EndsBeforeClass1Start) || endAtSameTime) {
+			endsDuring = true;
+		}
+		
+		//class 1 starts before class 2 starts
+		Boolean class1StartsBefore2 = checkIsTimeBefore(class1.getStartTime(), class2.getStartTime());
+		// class 2 starts before class 1 ends  
+		Boolean class2StartsBeforeClass1End = checkIsTimeBefore(class2.getStartTime(), class1.getEndTime());
+		Boolean startAtSameTime = class2.getStartTime().equals(class1.getStartTime());
+		if(( class1StartsBefore2 && class2StartsBeforeClass1End) || startAtSameTime ) {
+			startsDuring = true;
+		}
+		
+		
+		if((isSameTime || endsDuring || startsDuring) && isSameDay) {
+			haveConflicts = true;
+		}
+		
+		Boolean class2EndsBefore1 = checkIsTimeBefore(class2.getStartTime(), class1.getEndTime());
+		
+		Boolean class1EndsBeforeClass2Start = checkIsTimeBefore(class1.getEndTime(), class2.getEndTime());
+		endAtSameTime = class2.getEndTime().equals(class1.getEndTime());
+		if((class2EndsBefore1 && class1EndsBeforeClass2Start) || endAtSameTime) {
+			endsDuring = true;
+		}
+		
+		
+		Boolean class2StartsBefore1 = checkIsTimeBefore(class2.getStartTime(), class1.getStartTime());
+	 
+		Boolean class1StartsBeforeClass2End = checkIsTimeBefore(class1.getStartTime(), class2.getEndTime());
+		startAtSameTime = class2.getStartTime().equals(class1.getStartTime());
+		if(( class2StartsBefore1 && class1StartsBeforeClass2End) || startAtSameTime ) {
+			startsDuring = true;
+		}
+		
+		
+		if((isSameTime || endsDuring || startsDuring) && isSameDay) {
+			haveConflicts = true;
+		}
+		
+		
+		return haveConflicts;
+		
+	}
+	
 	//check if courses that have course constraints do not have the same time
 	public Boolean checkClassConstraints() {
 		Boolean haveConflicts = false;
 		
 		for(int i = 0; i < allClasses.size(); i++) {
 			
-			ArrayList<Constraint> courseConstraints = allClasses.get(i).getCourse().getConstraints();
-			
-			for(int j= 0; j < courseConstraints.size(); j++) {
-				
-				Boolean isSameTime = courseConstraints.get(j).getClass1().getClassTime().toString().equals(courseConstraints.get(j).getClass2().getClassTime().toString());
-				Boolean endsDuring = false;
-				Boolean startsDuring = false;
-				Boolean isSameDay = hasOverlappingDays(courseConstraints.get(j).getClass1().getClassTime(), courseConstraints.get(j).getClass2().getClassTime());
-				
-				if((checkIsTimeBefore(courseConstraints.get(j).getClass1().getEndTime(), courseConstraints.get(j).getClass2().getEndTime()) && checkIsTimeBefore(courseConstraints.get(j).getClass2().getStartTime(), courseConstraints.get(j).getClass1().getEndTime())) || courseConstraints.get(j).getClass2().getStartTime().equals(courseConstraints.get(j).getClass1().getStartTime())) {
-					endsDuring = true;
-				}
-				
-				if((checkIsTimeBefore(courseConstraints.get(j).getClass2().getStartTime(), courseConstraints.get(j).getClass1().getStartTime()) && checkIsTimeBefore(courseConstraints.get(j).getClass1().getStartTime(), courseConstraints.get(j).getClass2().getEndTime())) || courseConstraints.get(j).getClass2().getEndTime().equals(courseConstraints.get(j).getClass1().getEndTime())) {
-					startsDuring = true;
-				}
-				
-				
-				if((isSameTime || endsDuring || startsDuring) && isSameDay) {
-					haveConflicts = true;
-				}
-			}
+			//TODO
 			
 		}
 		
@@ -197,13 +238,20 @@ public class Term
 		Boolean isBefore = false;
 		String[] time1Parts = time1.split(":");
 		String[] time2Parts = time2.split(":");
-		
-		int time1Hour = Integer.parseInt(time1Parts[0]);
-		int time2Hour = Integer.parseInt(time2Parts[0]);
-		int time1Min = Integer.parseInt(time1Parts[1].substring(0,2));
-		int time2Min = Integer.parseInt(time2Parts[1].substring(0,2));
 		String time1Period = time1Parts[1].substring(2,4);
 		String time2Period = time2Parts[1].substring(2,4);
+		
+		int time1Hour = Integer.parseInt(time1Parts[0]);
+		if (time1Period.equals("PM") && time1Hour != 12) {
+			time1Hour += 12;
+		}
+		int time2Hour = Integer.parseInt(time2Parts[0]);
+		if (time2Period.equals("PM") && time2Hour != 12) {
+			time2Hour += 12;
+		}
+		int time1Min = Integer.parseInt(time1Parts[1].substring(0,2));
+		int time2Min = Integer.parseInt(time2Parts[1].substring(0,2));
+		
 		
 		if (time1Hour < time2Hour && ((time1Period.equals("AM") && time2Period.equals("AM")) ||  (time1Period.equals("PM") && time2Period.equals("PM")) ) ) {
 			return true;
@@ -310,6 +358,19 @@ public class Term
 		this.isFinalized = true;
 	}
 	
+	//TODO add tests
+	public void removeConstraint(Constraint constraint) {
+		for(int i = 0; i<constraints.size(); i++) {
+			if(constraints.get(i).toString().equals(constraint.toString())) {
+				constraints.remove(i);
+			}
+		}
+	}
+	
+	public void addConstraint(Constraint constraint) {
+		constraints.add(constraint);
+	}
+	
 	//Getter and Setter methods for relevant variables
 
 	/**
@@ -366,6 +427,14 @@ public class Term
 	public void setIsFinalized(Boolean isFinalized)
 	{
 		this.isFinalized = isFinalized;
+	}
+	
+	/**
+	 * @return the constraints
+	 */
+	public ArrayList<Constraint> getConstraints()
+	{
+		return constraints;
 	}
 
 	@Override

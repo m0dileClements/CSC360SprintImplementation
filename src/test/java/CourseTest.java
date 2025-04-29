@@ -59,44 +59,19 @@ class CourseTest
 	{
 		assertEquals("Bio110: Intro to Biology, Tags: E1, A", testCourse.toString());
 	}
-
 	
 	@Test
 	void testModifyCrossCourseCodes()
 	{
-		testCourse.createCrossListing("Bio210");
+		ArrayList<String> listings = new ArrayList<String>();
+		listings.add("Bio210");
+		testCourse.createCrossListing(listings);
 		assertEquals("Bio210", testCourse.getCrossListings().get(0));
-		testCourse.modifyCrossCourseCodes("Bio210", "ENS110");
-		assertEquals(1, testCourse.getCrossListings().size());
-		assertEquals("ENS110", testCourse.getCrossListings().get(0));
-	}
-
-	@Test
-	void testCreateCourseConstraint()
-	{
 		
-		testCourse.createCourseConstraint("Can't be taught at the same time", classInstance1, classInstance2);
-		testCourse.createCourseConstraint("The first one but switched", classInstance2, classInstance1);
-		assertEquals(2, testCourse.getConstraints().size());
-		
-		assertEquals("Constraint [constraintName=Can't be taught at the same time, class1=Group Conversation, class2=Software Design]", testCourse.getConstraints().get(0).toString());
-		assertEquals("Constraint [constraintName=The first one but switched, class1=Software Design, class2=Group Conversation]", testCourse.getConstraints().get(1).toString());
-		
-	}
-
-	@Test
-	void testRemoveConstraint()
-	{
-		testCourse.createCourseConstraint("Can't be taught at the same time", classInstance1, classInstance2);
-		testCourse.createCourseConstraint("The first one but switched", classInstance2, classInstance1);
-
-		assertEquals(2, testCourse.getConstraints().size());
-		
-		testCourse.removeConstraint(testCourse.getConstraints().get(0));
-		
-		assertEquals(1, testCourse.getConstraints().size());
-		assertEquals("Constraint [constraintName=The first one but switched, class1=Software Design, class2=Group Conversation]", testCourse.getConstraints().get(0).toString());
-		
+		listings.add("ENS110");
+		testCourse.modifyCrossCourseCodes(listings);
+		assertEquals(2, testCourse.getCrossListings().size());
+		assertEquals("ENS110", testCourse.getCrossListings().get(1));
 	}
 
 	@Test
@@ -144,10 +119,10 @@ class CourseTest
 	@Test
 	void testGetCrossListings()
 	{
-		testCourse.createCrossListing("BIO210");
 		
 		ArrayList<String> listings = new ArrayList<String>();
 		listings.add("BIO210");
+		testCourse.createCrossListing(listings);
 		ArrayList<String> addedListings = testCourse.getCrossListings();
 		
 		
@@ -181,7 +156,10 @@ class CourseTest
 	@Test
 	void testCreateCrossListings()
 	{
-		testCourse.createCrossListing("Bio121");
+		
+		ArrayList<String> listings = new ArrayList<String>();
+		listings.add("Bio210");
+		testCourse.createCrossListing(listings);
 		assertEquals(1, testCourse.getCrossListings().size());
 
 
@@ -193,24 +171,7 @@ class CourseTest
 			}
 		}
 		
-		assertEquals("Bio121", crossListingsString);
-	}
-
-
-	@Test
-	void testGetConstraints()
-	{
-		testCourse.createCourseConstraint("Can't be taught at the same time", classInstance1, classInstance2);	
-		testCourse.createCourseConstraint("The first one but switched", classInstance2, classInstance1);
-	
-		String constraintTester = "";
-		for(int i = 0; i < testCourse.getConstraints().size(); i++) {
-			constraintTester += testCourse.getConstraints().get(i) + " ";
-		}
-		
-		assertEquals("Constraint [constraintName=Can't be taught at the same time, class1=Group Conversation, class2=Software Design] "
-				+ "Constraint [constraintName=The first one but switched, class1=Software Design, class2=Group Conversation] ", constraintTester);
-		
+		assertEquals("Bio210", crossListingsString);
 	}
 	
 	@Test
