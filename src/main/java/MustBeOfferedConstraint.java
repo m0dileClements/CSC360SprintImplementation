@@ -22,7 +22,6 @@ public class MustBeOfferedConstraint extends Constraint
 		Boolean isOffered = true;
 		if(u.getCanFinalize()) {
 			ArrayList<ClassInstance> termClasses = term.getAllClasses();
-			ArrayList<ClassInstance> classesOffered = new ArrayList<ClassInstance>();
 			
 			for(int i = 0; i < classes.size(); i++) {
 				Boolean classOffered = false;

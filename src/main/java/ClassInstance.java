@@ -1,6 +1,6 @@
 
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 //import java.util.ArrayList;
 
@@ -88,7 +88,6 @@ public class ClassInstance
 						startMins = Integer.parseInt(startTimeParts[1]);
 					}
 				}
-				String test = endingTime.substring(0,2);
 				
 				//converts the ending time to integer values
 				if(endingTime.charAt(5) == 'P'|| endingTime.charAt(4) == 'P') {

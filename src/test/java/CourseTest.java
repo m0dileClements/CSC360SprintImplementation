@@ -42,7 +42,6 @@ class CourseTest
 		classInstance1 = new ClassInstance(courseTest, termTest, instructorTest, "MWF 10:20 - 11:20AM", roomTest, deptTest);
 		
 		//setup for Class Instance 2
-		DepartmentHead deptHeadTest2 = new DepartmentHead("Michael Bradshaw", "anonDragoLord", "IamAw3some");
 		Department deptTest2 = new Department(deptHeadTest, "CSC");
 		Instructor instructorTest2 = new Instructor("Michael Bradshaw", deptTest);
 		Room roomTest2 = new Room("Olin", 212);
