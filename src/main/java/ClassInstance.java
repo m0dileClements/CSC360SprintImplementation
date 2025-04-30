@@ -141,24 +141,40 @@ public class ClassInstance
 		
 		
 		//creates a deep copy of a class
-		public ClassInstance getDeepCopy() {
+		public ClassInstance getDeepCopy(User u) {
 			ClassInstance classCopy = new ClassInstance();
 			
-			classCopy.course = this.course;
-			classCopy.term = this.term;
-			classCopy.instructor = this.instructor;
-			classCopy.classTime = this.classTime;
-			classCopy.startTime = this.startTime;
-			classCopy.endTime = this.endTime;
-			classCopy.room = this.room;
-			classCopy.dept = this.dept;
-			classCopy.classLength = this.classLength;
-			classCopy.hasFalseLimit = this.hasFalseLimit;
-			
+			if(u.getCanCreate()) {
+				classCopy.course = this.course;
+				classCopy.term = this.term;
+				classCopy.instructor = this.instructor;
+				classCopy.classTime = this.classTime;
+				classCopy.startTime = this.startTime;
+				classCopy.endTime = this.endTime;
+				classCopy.room = this.room;
+				classCopy.dept = this.dept;
+				classCopy.classLength = this.classLength;
+				classCopy.hasFalseLimit = this.hasFalseLimit;
+			}
 			return classCopy;
 		}
 	//
 	
+	public void modifyClassInstance(User u, ClassInstance updatedClass) {
+		if(u.getCanEdit()) {
+			course = updatedClass.getCourse();
+			term = updatedClass.getTerm();
+			instructor = updatedClass.getInstructor();
+			classTime = updatedClass.getClassTime();
+			startTime = updatedClass.getStartTime();
+			endTime = updatedClass.getEndTime();
+			room = updatedClass.getRoom();
+			dept = updatedClass.getDept();
+			classLength = updatedClass.getClassLength();
+			hasFalseLimit = updatedClass.getHasFalseLimit();
+			
+		}
+	}
 	
 	//Getter and Setter methods for all relevant variables
 	

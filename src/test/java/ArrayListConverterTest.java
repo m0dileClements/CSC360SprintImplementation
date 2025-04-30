@@ -36,6 +36,8 @@ class ArrayListConverterTest
 		main.addUser(testerUser);
 		main.setCurrentUser(testerUser);
 		
+		Registrar createPermissions = new Registrar("", "", "");
+		
 		DepartmentHead deptHeadTest = new DepartmentHead("Alison Conelly", "FrenchGal", "Oui0ui");
 		Department deptTest = new Department(deptHeadTest, "French");
 		main.addDept(deptTest);
@@ -51,13 +53,13 @@ class ArrayListConverterTest
 		tagArray.add("L");
 		
 		testTerm = new Term("Spring", 2025);
-		main.addTerm(testTerm);
+		main.addTerm(createPermissions, testTerm);
 		
 		Course courseTest = new Course("FRE270", "Group Conversation", tagArray);
 		main.addCourse(courseTest);
 		
 		class1 = new ClassInstance(courseTest, testTerm, instructorTest, "TR 9:40AM - 12:10PM", roomTest, deptTest);
-		testTerm.addClass(class1);
+		testTerm.addClass(createPermissions, class1);
 		main.addClassInstance(class1);
 		
 		
@@ -79,7 +81,7 @@ class ArrayListConverterTest
 		main.addCourse(courseTest2);
 		
 		class2 = new ClassInstance(courseTest2, testTerm, instructorTest2, "MWF 10:20AM - 12:40PM", roomTest2, deptTest2);
-		testTerm.addClass(class2);
+		testTerm.addClass(createPermissions, class2);
 		main.addClassInstance(class2);
 		
 		DepartmentHead deptHeadTest3 = new DepartmentHead("HeadMan", "BigBos", "IHaveSevereImposterSyndrome");
@@ -97,13 +99,13 @@ class ArrayListConverterTest
 		tags3.add("D");
 		
 		testTerm2 = new Term("Fall", 2025);
-		main.addTerm(testTerm2);
+		main.addTerm(createPermissions,testTerm2);
 		
 		Course courseTest3 = new Course("DSC", "Impacts of Analytics on Human body", tags3);
 		main.addCourse(courseTest3);
 		
 		class3 = new ClassInstance(courseTest3, testTerm2, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest3);
-		testTerm2.addClass(class3);
+		testTerm2.addClass(createPermissions, class3);
 		main.addClassInstance(class3);
 		
 		//DepartmentHead deptHeadTest4 = new DepartmentHead("TA", "ImJustAGraduateStudent", "Im drowning in work");
@@ -118,13 +120,13 @@ class ArrayListConverterTest
 		tags4.add("D");
 		
 		testTerm3 = new Term("Winter", 2026);
-		main.addTerm(testTerm3);
+		main.addTerm(createPermissions, testTerm3);
 		
 		Course courseTest4 = new Course("DLM110b", "How to cope with college", tags4);
 		main.addCourse(courseTest4);
 		
 		class4 = new ClassInstance(courseTest4, testTerm3, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest3);
-		testTerm3.addClass(class4);
+		testTerm3.addClass(createPermissions, class4);
 		main.addClassInstance(class4);
 		
 		

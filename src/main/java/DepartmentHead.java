@@ -7,7 +7,7 @@ public class DepartmentHead extends User
 	
 	public DepartmentHead(String name, String username, String password) {
 		super(name, username, password);
-		this.canReadGeneralInfo = true;
+		this.canFinalize = false;
 		this.canReadPendingInfo = true;
 		this.canEdit = true;
 		this.canCreate = true;

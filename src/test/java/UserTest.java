@@ -36,9 +36,9 @@ class UserTest
 		
 	}
 	@Test
-	void testCanReadGeneralInfo()
+	void testCanFinalize()
 	{
-		assertEquals(true, u.getCanReadGeneralInfo());
+		assertEquals(false, u.getCanFinalize());
 		
 	}
 	
@@ -71,11 +71,11 @@ class UserTest
 	}
 	
 	@Test
-	void testSetCanReadGeneralInfo()
+	void testSetCanFinalize()
 	{
-		assertEquals(true, u.getCanReadGeneralInfo());
-		u.setCanReadGeneralInfo(false);
-		assertEquals(false, u.getCanReadGeneralInfo());
+		assertEquals(false, u.getCanFinalize());
+		u.setCanFinalize(true);
+		assertEquals(true, u.getCanFinalize());
 	}
 	
 	@Test

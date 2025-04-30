@@ -87,8 +87,52 @@ class ClassInstanceTest
 	@Test
 	void testGetDeepCopy()
 	{
-		ClassInstance class2 = classInstance1.getDeepCopy();
+		User noPermissions = new User("", "", "");
+		Registrar allPermissions = new Registrar("", "", "");
 		
+		
+		DepartmentHead deptHeadTest = new DepartmentHead("Alison Conelly", "FrenchGal", "Oui0ui");
+		deptTest = new Department(deptHeadTest, "French");
+		Instructor instructorTest = new Instructor("Allison Conelly", deptTest);
+		Room roomTest = new Room("Grant", 307);
+		ArrayList<String> tagArray = new ArrayList<String>();
+		
+		tagArray.add("E3");
+		tagArray.add("L");
+		Term termTest2 = new Term("Fall", 2024);
+		Course courseTest = new Course("FRE270", "Group Conversation", tagArray);
+		ClassInstance class2 = new ClassInstance(courseTest, termTest2, instructorTest, "TR 9:40AM - 12:10PM", roomTest, deptTest);
+		
+		//classInstance1.modifyClassInstance(deptHeadTest, class2);
+		
+		assertEquals(true, class2.getCourse().toString().equals(classInstance1.getCourse().toString()));
+		assertEquals(false, class2.getTerm().toString().equals(classInstance1.getTerm().toString()));
+		assertEquals(true, class2.getInstructor().toString().equals(classInstance1.getInstructor().toString()));
+		assertEquals(true, class2.getClassTime().toString().equals(classInstance1.getClassTime().toString()));
+		assertEquals(true, class2.getStartTime().toString().equals(classInstance1.getStartTime().toString()));
+		assertEquals(true, class2.getEndTime().toString().equals(classInstance1.getEndTime().toString()));
+		assertEquals(false, class2.getRoom().toString().equals(classInstance1.getRoom().toString()));
+		assertEquals(true, class2.getDept().toString().equals(classInstance1.getDept().toString()));
+		assertEquals(true, class2.getClassLength() == classInstance1.getClassLength());
+		assertEquals(true, class2.getHasFalseLimit() == classInstance1.getHasFalseLimit());	
+		
+		classInstance1.modifyClassInstance(noPermissions, class2);
+		
+		assertEquals(false, class2.getTerm().toString().equals(classInstance1.getTerm().toString()));
+		assertEquals(false, class2.getRoom().toString().equals(classInstance1.getRoom().toString()));
+		
+		classInstance1.modifyClassInstance(allPermissions, class2);
+		
+		assertEquals(true, class2.getTerm().toString().equals(classInstance1.getTerm().toString()));
+		assertEquals(true, class2.getRoom().toString().equals(classInstance1.getRoom().toString()));
+	}
+	
+	@Test
+	void testModifyClassInstance()
+	{
+		Registrar allPermissions = new Registrar("", "", "");
+		ClassInstance class2 = classInstance1.getDeepCopy(allPermissions);
+		 
 		assertEquals(true, class2.getCourse().toString().equals(classInstance1.getCourse().toString()));
 		assertEquals(true, class2.getTerm().toString().equals(classInstance1.getTerm().toString()));
 		assertEquals(true, class2.getInstructor().toString().equals(classInstance1.getInstructor().toString()));
@@ -100,6 +144,8 @@ class ClassInstanceTest
 		assertEquals(true, class2.getClassLength() == classInstance1.getClassLength());
 		assertEquals(true, class2.getHasFalseLimit() == classInstance1.getHasFalseLimit());	
 	}
+	
+	
 
 	@Test
 	void testGetCourse()

@@ -15,10 +15,13 @@ class NonOverlappingConstraintTest
 	ClassInstance class2;
 	ClassInstance class3;
 	ClassInstance class4;
+	Registrar allPermissions;
 	
 	@BeforeEach
 	void setUp() throws Exception
 	{
+		allPermissions = new Registrar("", "", "");
+		
 		DepartmentHead deptHeadTest = new DepartmentHead("Alison Conelly", "FrenchGal", "Oui0ui");
 		Department deptTest = new Department(deptHeadTest, "French");
 		Instructor instructorTest = new Instructor("Allison Conelly", deptTest);
@@ -65,110 +68,114 @@ class NonOverlappingConstraintTest
 	@Test
 	void testEvaluateConstraints()
 	{
-		testTerm.addClass(class1);
-		testTerm.addClass(class2);
+		testTerm.addClass(allPermissions, class1);
+		testTerm.addClass(allPermissions, class2);
 		ArrayList<ClassInstance> constrainedClasses = new ArrayList<ClassInstance>();
 		constrainedClasses.add(class1);
 		constrainedClasses.add(class2);
 		
 		NonOverlappingConstraint constraint1 = new NonOverlappingConstraint(testTerm, "must not be offered at same time", constrainedClasses);
-		testTerm.addConstraint(constraint1);
+		testTerm.addConstraint(allPermissions, constraint1);
 		assertEquals("must not be offered at same time", constraint1.getConstraintName());
 		
 		//class 1:  TR 9:40AM - 12:10PM
 		assertEquals(2, constraint1.getClasses().size());
 		constrainedClasses.add(class3);
 		constraint1.setClasses(constrainedClasses);
-		assertEquals(false, constraint1.evaluateConstraint());
+		assertEquals(false, constraint1.evaluateConstraint(allPermissions));
 		
 		constrainedClasses.remove(class3);
 		constraint1.setClasses(constrainedClasses);
 		
-		assertEquals(true, constraint1.evaluateConstraint());
-		
+		assertEquals(true, constraint1.evaluateConstraint(allPermissions));
+		User noPermissions = new User("", "", "");
+		assertEquals(false, constraint1.evaluateConstraint(noPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("TR 9:30AM - 12:20PM");
-		assertEquals(false, constraint1.evaluateConstraint());
+		assertEquals(false, constraint1.evaluateConstraint(allPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("TR 9:50AM - 12:00PM");
-		assertEquals(false, constraint1.evaluateConstraint());
+		assertEquals(false, constraint1.evaluateConstraint(allPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("TR 12:40PM - 2:10PM");
-		assertEquals(true, constraint1.evaluateConstraint());
+		assertEquals(true, constraint1.evaluateConstraint(allPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("TR 8:00AM - 9:30AM");
-		assertEquals(true, constraint1.evaluateConstraint());
+		assertEquals(true, constraint1.evaluateConstraint(allPermissions));
 		
 		
 		testTerm.getAllClasses().get(1).setClassTime("TR 9:40AM - 12:10PM");
-		assertEquals(false, constraint1.evaluateConstraint());
+		assertEquals(false, constraint1.evaluateConstraint(allPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("TR 9:40AM - 12:20PM");
-		assertEquals(false, constraint1.evaluateConstraint());
+		assertEquals(false, constraint1.evaluateConstraint(allPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("TR 9:40AM - 1:00PM");
-		assertEquals(false, constraint1.evaluateConstraint());
+		assertEquals(false, constraint1.evaluateConstraint(allPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("TR 9:50AM - 12:10PM");
-		assertEquals(false, constraint1.evaluateConstraint());
+		assertEquals(false, constraint1.evaluateConstraint(allPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("TR 9:30AM - 12:10PM");
-		assertEquals(false, constraint1.evaluateConstraint());
+		assertEquals(false, constraint1.evaluateConstraint(allPermissions));
 		
 		
 		
 		testTerm.getAllClasses().get(1).setClassTime("T 9:40AM - 12:10PM");
-		assertEquals(false, constraint1.evaluateConstraint());
+		assertEquals(false, constraint1.evaluateConstraint(allPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("T 9:40AM - 12:20PM");
-		assertEquals(false, constraint1.evaluateConstraint());
+		assertEquals(false, constraint1.evaluateConstraint(allPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("T 9:40AM - 1:00PM");
-		assertEquals(false, constraint1.evaluateConstraint());
+		assertEquals(false, constraint1.evaluateConstraint(allPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("T 9:50AM - 12:10PM");
-		assertEquals(false, constraint1.evaluateConstraint());
+		assertEquals(false, constraint1.evaluateConstraint(allPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("T 9:30AM - 12:10PM");
-		assertEquals(false, constraint1.evaluateConstraint());
+		assertEquals(false, constraint1.evaluateConstraint(allPermissions));
 		
 
 
 		testTerm.getAllClasses().get(1).setClassTime("MWF 9:40AM - 12:10PM");
-		assertEquals(true, constraint1.evaluateConstraint());
+		assertEquals(true, constraint1.evaluateConstraint(allPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("MWF 9:40AM - 12:20PM");
-		assertEquals(true, constraint1.evaluateConstraint());
+		assertEquals(true, constraint1.evaluateConstraint(allPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("MWF 9:40AM - 1:00PM");
-		assertEquals(true, constraint1.evaluateConstraint());
+		assertEquals(true, constraint1.evaluateConstraint(allPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("MWF 9:50AM - 12:10PM");
-		assertEquals(true, constraint1.evaluateConstraint());
+		assertEquals(true, constraint1.evaluateConstraint(allPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("MWF 9:30AM - 12:10PM");
-		assertEquals(true, constraint1.evaluateConstraint());
+		assertEquals(true, constraint1.evaluateConstraint(allPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("MWF 9:30AM - 12:20PM");
-		assertEquals(true, constraint1.evaluateConstraint());
+		assertEquals(true, constraint1.evaluateConstraint(allPermissions));
 		
 		testTerm.getAllClasses().get(1).setClassTime("MWF 9:50AM - 12:00PM");
-		assertEquals(true, constraint1.evaluateConstraint());
+		assertEquals(true, constraint1.evaluateConstraint(allPermissions));
+		
+		testTerm.getAllClasses().get(1).setClassTime("MWF 10:20AM - 12:40PM");
+		assertEquals(true, constraint1.evaluateConstraint(allPermissions));
 		
 	}
 
 	@Test
 	void testToString()
 	{
-		testTerm.addClass(class1);
-		testTerm.addClass(class2);
-		testTerm.addClass(class3);
+		testTerm.addClass(allPermissions, class1);
+		testTerm.addClass(allPermissions, class2);
+		testTerm.addClass(allPermissions, class3);
 		ArrayList<ClassInstance> constrainedClasses = new ArrayList<ClassInstance>();
 		constrainedClasses.add(class2);
 		constrainedClasses.add(class3);
 		
 		NonOverlappingConstraint constraint1 = new NonOverlappingConstraint(testTerm, "must not be offered at same time", constrainedClasses);
-		testTerm.addConstraint(constraint1);
+		testTerm.addConstraint(allPermissions, constraint1);
 		assertEquals("NonOverlappingConstraint [term=Term [semester=Spring, year=2025], constraintName=must not be offered at same time]", constraint1.toString());
 		
 	}

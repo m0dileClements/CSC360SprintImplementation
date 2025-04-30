@@ -43,9 +43,9 @@ class DepartmentHeadTest
 	}
 	
 	@Test
-	void testCanReadGeneralInfo()
+	void testCanFinalize()
 	{
-		assertEquals(true, deptHead.getCanReadGeneralInfo());
+		assertEquals(false, deptHead.getCanFinalize());
 		
 	}
 	
@@ -57,7 +57,7 @@ class DepartmentHeadTest
 	}
 	
 	@Test
-	void testCcanEdit()
+	void testCanEdit()
 	{
 		assertEquals(true, deptHead.getCanEdit());
 		

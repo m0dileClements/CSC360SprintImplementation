@@ -18,10 +18,12 @@ class InstructorTest
 	Term testTerm;
 	ClassInstance class1;
 	ClassInstance class2;
+	Registrar createPermissions;
 	
 	@BeforeEach
 	void setUp() throws Exception
 	{
+		createPermissions = new Registrar("", "", "");
 		deptHead = new DepartmentHead("Grand Master of All Lords", "OhExaltedOne", "1Rul3All");
 		biology = new Department(deptHead, "biology");
 		instructor = new Instructor("Robin Williams", biology);
@@ -47,8 +49,8 @@ class InstructorTest
 		Course courseTest2 = new Course("Bio210", "Environmental Science", tags2);
 		class2 = new ClassInstance(courseTest2, testTerm, instructor, "MWF 10:20AM - 12:20PM", roomTest2, deptTest2);
 		
-		testTerm.addClass(class1);
-		testTerm.addClass(class2);
+		testTerm.addClass(createPermissions, class1);
+		testTerm.addClass(createPermissions, class2);
 	}
 
 	@Test
@@ -116,7 +118,13 @@ class InstructorTest
 		Course courseTest3 = new Course("DSC", "Impacts of Analytics on Human body", tags3);
 		ClassInstance class3 = new ClassInstance(courseTest3, testTerm, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest3);
 		
-		testTerm.addClass(class3);
+		testTerm.addClass(createPermissions, class3);
+		
+		instructorHours = instructor.getTermHours(testTerm);
+		assertEquals(11.0, instructorHours);
+		
+		User noPermissions = new User("", "", "");
+		testTerm.addClass(noPermissions, class3);
 		
 		instructorHours = instructor.getTermHours(testTerm);
 		assertEquals(11.0, instructorHours);

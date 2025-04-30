@@ -33,7 +33,7 @@ public class ArrayListConverter extends Converter
 	
 	//load in data using one ArrayList of String arrays(each containing info for a single class)
 	public void loadData(Main main){
-		
+		Registrar loadDataPermissions = new Registrar("", "", "");
 		//these department heads would be stored in a different location as the list information for each class
 		//would not include that information.
 		DepartmentHead deptHeadTest = new DepartmentHead("Alison Conelly", "FrenchGal", "Oui0ui");
@@ -88,7 +88,7 @@ public class ArrayListConverter extends Converter
 			main.addDept(dept);
 			main.addInstructor(instructor);
 			main.addRoom(room);
-			main.addTerm(term);
+			main.addTerm(loadDataPermissions, term);
 			main.addCourse(course);
 			main.addClassInstance(fullClass);
 		}

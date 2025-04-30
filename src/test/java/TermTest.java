@@ -18,10 +18,15 @@ class TermTest
 	ClassInstance class2;
 	ClassInstance class3;
 	ClassInstance class4;
+	Registrar allPermissions;
+	Term finalTerm;
 	
 	@BeforeEach
 	void setUp() throws Exception
 	{
+		allPermissions = new Registrar("", "", "");
+		finalTerm = new Term("FinalizedTest", 2032);
+		
 		DepartmentHead deptHeadTest = new DepartmentHead("Alison Conelly", "FrenchGal", "Oui0ui");
 		Department deptTest = new Department(deptHeadTest, "French");
 		Instructor instructorTest = new Instructor("Allison Conelly", deptTest);
@@ -74,27 +79,42 @@ class TermTest
 	@Test
 	void testAddClass()
 	{
-		testTerm.addClass(class1);
+		User noPermissions = new User("", "", "");
+		testTerm.addClass(noPermissions, class1);
+		assertEquals(0, testTerm.getAllClasses().size());
+		
+		finalTerm.addClass(noPermissions, class1);
+		assertEquals(0, testTerm.getAllClasses().size());
+		
+		finalTerm.addClass(allPermissions, class1);
+		assertEquals(0, testTerm.getAllClasses().size());
+		
+		testTerm.addClass(allPermissions, class1);
 		assertEquals(1, testTerm.getAllClasses().size());
 	}
 
 	@Test
 	void testRemoveClassfromTerm()
 	{
-		testTerm.addClass(class1);
+		testTerm.addClass(allPermissions, class1);
 		assertEquals(1, testTerm.getAllClasses().size());
-		testTerm.removeClassfromTerm(class1);
+		
+		User noPermissions = new User("", "", "");
+		testTerm.removeClassfromTerm(noPermissions, class1);
+		assertEquals(1, testTerm.getAllClasses().size());
+		
+		testTerm.removeClassfromTerm(allPermissions, class1);
 		assertEquals(0, testTerm.getAllClasses().size());
 	}
 
 	@Test
 	void testGetClassesByTime()
 	{
-		testTerm.addClass(class1);
-		testTerm.addClass(class2);
+		testTerm.addClass(allPermissions, class1);
+		testTerm.addClass(allPermissions, class2);
 		
 
-		testTerm.addClass(class3);
+		testTerm.addClass(allPermissions, class3);
 		ArrayList<ClassInstance> sameTimedClasses = new ArrayList<ClassInstance>();
 		sameTimedClasses = testTerm.getClassesByTime("TR 9:40AM - 12:10PM");
 		assertEquals(1, sameTimedClasses.size());
@@ -107,9 +127,9 @@ class TermTest
 	@Test
 	void testGetClassesByDept()
 	{
-		testTerm.addClass(class1);
-		testTerm.addClass(class2);
-		testTerm.addClass(class3);
+		testTerm.addClass(allPermissions, class1);
+		testTerm.addClass(allPermissions, class2);
+		testTerm.addClass(allPermissions, class3);
 		
 		ArrayList<ClassInstance> sameDeptClasses = new ArrayList<ClassInstance>();
 		sameDeptClasses = testTerm.getClassesByDept("French");
@@ -127,10 +147,10 @@ class TermTest
 	@Test
 	void testGetInstrutorConflicts()
 	{
-		testTerm.addClass(class1);
-		testTerm.addClass(class2);
-		testTerm.addClass(class3);
-		testTerm.addClass(class4);
+		testTerm.addClass(allPermissions, class1);
+		testTerm.addClass(allPermissions, class2);
+		testTerm.addClass(allPermissions, class3);
+		testTerm.addClass(allPermissions, class4);
 		
 		ArrayList<ClassInstance> instructorConflicts = testTerm.getInstructorConflicts();
 		assertEquals(2, instructorConflicts.size());
@@ -162,10 +182,10 @@ class TermTest
 	@Test
 	void testGetTimeRoomConflicts()
 	{
-		testTerm.addClass(class1);
-		testTerm.addClass(class2);
-		testTerm.addClass(class3);
-		testTerm.addClass(class4);
+		testTerm.addClass(allPermissions, class1);
+		testTerm.addClass(allPermissions, class2);
+		testTerm.addClass(allPermissions, class3);
+		testTerm.addClass(allPermissions, class4);
 		
 		ArrayList<ClassInstance> timeRoomConflicts = testTerm.getTimeRoomConflicts();
 		
@@ -198,8 +218,8 @@ class TermTest
 	@Test
 	void testCheckTimeConflict()
 	{
-		testTerm.addClass(class1);
-		testTerm.addClass(class2);
+		testTerm.addClass(allPermissions, class1);
+		testTerm.addClass(allPermissions, class2);
 		
 		//class 1:  TR 9:40AM - 12:10PM
 		testTerm.getAllClasses().get(0).setClassTime("TR 9:40AM - 12:10PM");
@@ -295,23 +315,29 @@ class TermTest
 	@Test
 	void testCheckCorrectness()
 	{
-		testTerm.addClass(class1);
-		testTerm.addClass(class2);
-		testTerm.addClass(class3);
-		testTerm.addClass(class4);
-		assertEquals(false, testTerm.checkCorrectness());
+		testTerm.addClass(allPermissions, class1);
+		testTerm.addClass(allPermissions, class2);
+		testTerm.addClass(allPermissions, class3);
+		testTerm.addClass(allPermissions, class4); 
+		assertEquals(false, testTerm.checkCorrectness(allPermissions));
+		User noPermissions = new User("", "", "");
+		assertEquals(false, testTerm.checkCorrectness(noPermissions));
 		
 		testTerm.getAllClasses().get(2).setClassTime("TR 10:20AM - 12:40PM");
-		assertEquals(true, testTerm.checkCorrectness());
+		assertEquals(true, testTerm.checkCorrectness(allPermissions));
+		
+		
+		
+		
 	}
 
 	@Test
 	void testgetAllTermInstructors()
 	{
-		testTerm.addClass(class1);
-		testTerm.addClass(class2);
-		testTerm.addClass(class3);
-		testTerm.addClass(class4);
+		testTerm.addClass(allPermissions, class1);
+		testTerm.addClass(allPermissions, class2);
+		testTerm.addClass(allPermissions, class3);
+		testTerm.addClass(allPermissions, class4);
 		ArrayList<Instructor> instructors = new ArrayList<Instructor>();
 		instructors = testTerm.getAllTermInstructors();
 		
@@ -325,8 +351,8 @@ class TermTest
 	@Test
 	void testGetInstructorCourses()
 	{
-		testTerm.addClass(class3);
-		testTerm.addClass(class4);
+		testTerm.addClass(allPermissions, class3);
+		testTerm.addClass(allPermissions, class4);
 		
 		Instructor instructor = testTerm.getAllClasses().get(0).getInstructor();
 		
@@ -349,9 +375,9 @@ class TermTest
 	@Test
 	void testSetAllClasses()
 	{
-		testTerm.addClass(class1);
-		testTerm.addClass(class2);
-		testTerm.addClass(class3);
+		testTerm.addClass(allPermissions, class1);
+		testTerm.addClass(allPermissions, class2);
+		testTerm.addClass(allPermissions, class3);
 		assertEquals(3, testTerm.getAllClasses().size());
 		
 		ArrayList<ClassInstance> testList = new ArrayList<ClassInstance>();
@@ -363,13 +389,17 @@ class TermTest
 		assertEquals(2, testTerm.getAllClasses().size());
 		assertEquals("ClassInstance [course=DSC: Impacts of Analytics on Human body, Tags: E1, D, term=Term [semester=Spring, year=2025], instructor=Instructor [name=Dr. Doctor, profDept=biology, hours=0.0], classTime=MWF 10:20AM - 12:40PM, room=Olin 222, dept=HeadMan: biology, classLength=7.0, hasFalseLimit=false]", testTerm.getAllClasses().get(0).toString());
 		assertEquals("ClassInstance [course=DLM110b: How to cope with college, Tags: E1, D, term=Term [semester=Spring, year=2025], instructor=Instructor [name=Dr. Doctor, profDept=biology, hours=0.0], classTime=MWF 10:20AM - 12:40PM, room=Olin 222, dept=TA: dlm, classLength=7.0, hasFalseLimit=false]", testTerm.getAllClasses().get(1).toString());
+		
 	}
 	
 	@Test
 	void testMarkAsFinal()
 	{
 		assertEquals(false, testTerm.getIsFinalized());
-		testTerm.markAsFinal();
+		User noPermissions = new User("", "", "");
+		testTerm.markAsFinal(noPermissions);
+		assertEquals(false, testTerm.getIsFinalized());
+		testTerm.markAsFinal(allPermissions);
 		assertEquals(true, testTerm.getIsFinalized());
 
 	}
@@ -405,8 +435,8 @@ class TermTest
 	@Test
 	void testGetAllClasses()
 	{
-		testTerm.addClass(class1);
-		testTerm.addClass(class2);
+		testTerm.addClass(allPermissions, class1);
+		testTerm.addClass(allPermissions, class2);
 		assertEquals(2, testTerm.getAllClasses().size());
 		assertEquals("ClassInstance [course=FRE270: Group Conversation, Tags: E3, L, term=Term [semester=Spring, year=2025], instructor=Instructor [name=Allison Conelly, profDept=French, hours=0.0], classTime=TR 9:40AM - 12:10PM, room=Crounse 307, dept=Alison Conelly: French, classLength=5.0, hasFalseLimit=false]", testTerm.getAllClasses().get(0).toString());
 		assertEquals("ClassInstance [course=Bio210: Environmental Science, Tags: E2, S, term=Term [semester=Spring, year=2025], instructor=Instructor [name=The Genie, profDept=biology, hours=0.0], classTime=MWF 10:20AM - 12:40PM, room=Olin 201, dept=HeadWoman: biology, classLength=7.0, hasFalseLimit=false]", testTerm.getAllClasses().get(1).toString());
@@ -438,14 +468,16 @@ class TermTest
 		constrainedClasses.add(class2);
 		constrainedClasses.add(class3);
 		NonOverlappingConstraint constraint1 = new NonOverlappingConstraint(testTerm, "must not be offered at same time", constrainedClasses);
-		testTerm.addConstraint(constraint1);
+		testTerm.addConstraint(allPermissions, constraint1);
 		
 		MustOverlapConstraint constraint2 = new MustOverlapConstraint(testTerm, "must be offered at same time", constrainedClasses);
-		testTerm.addConstraint(constraint2);
+		testTerm.addConstraint(allPermissions, constraint2);
 		
 		MustBeOfferedConstraint constraint3 = new MustBeOfferedConstraint(testTerm, "must be offered", constrainedClasses);
-		testTerm.addConstraint(constraint3);
+		testTerm.addConstraint(allPermissions, constraint3);
 	
+		assertEquals(3, testTerm.getConstraints().size());
+		
 		String constraintTester = "";
 		for(int i = 0; i < testTerm.getConstraints().size(); i++) {
 			constraintTester += testTerm.getConstraints().get(i);
@@ -460,23 +492,76 @@ class TermTest
 	@Test
 	void testRemoveConstraint()
 	{
+		User noPermissions = new User("", "", "");
 		ArrayList<ClassInstance> constrainedClasses = new ArrayList<ClassInstance>();
 		constrainedClasses.add(class2);
 		constrainedClasses.add(class3);
 		NonOverlappingConstraint constraint1 = new NonOverlappingConstraint(testTerm, "must not be offered at same time", constrainedClasses);
-		testTerm.addConstraint(constraint1);
+		testTerm.addConstraint(allPermissions, constraint1);
 		
 		MustOverlapConstraint constraint2 = new MustOverlapConstraint(testTerm, "must be offered at same time", constrainedClasses);
-		testTerm.addConstraint(constraint2);
-		
+		testTerm.addConstraint(allPermissions, constraint2);
+				
 		MustBeOfferedConstraint constraint3 = new MustBeOfferedConstraint(testTerm, "must be offered", constrainedClasses);
-		testTerm.addConstraint(constraint3);
+		testTerm.addConstraint(allPermissions, constraint3);
 
 		assertEquals(3, testTerm.getConstraints().size());
 		
-		testTerm.removeConstraint(testTerm.getConstraints().get(0));
-		
+		testTerm.removeConstraint(noPermissions, testTerm.getConstraints().get(0));
+		assertEquals(3, testTerm.getConstraints().size());
+
+		testTerm.removeConstraint(allPermissions, testTerm.getConstraints().get(0));
 		assertEquals(2, testTerm.getConstraints().size());
+		
+	}
+	
+	@Test
+	void testAddConstraint()
+	{
+		User noPermissions = new User("", "", "");
+		
+		assertEquals(0, testTerm.getConstraints().size());
+		ArrayList<ClassInstance> constrainedClasses = new ArrayList<ClassInstance>();
+		constrainedClasses.add(class2);
+		constrainedClasses.add(class3);
+		NonOverlappingConstraint constraint1 = new NonOverlappingConstraint(testTerm, "must not be offered at same time", constrainedClasses);
+		
+		testTerm.addConstraint(noPermissions, constraint1);
+		assertEquals(0, testTerm.getConstraints().size());
+		
+		testTerm.addConstraint(allPermissions, constraint1);
+		assertEquals(1, testTerm.getConstraints().size());
+		
+	}
+	
+	@Test
+	void testCheckClassConstraints()
+	{
+		ArrayList<ClassInstance> constrainedClasses = new ArrayList<ClassInstance>();
+		constrainedClasses.add(class1);
+		constrainedClasses.add(class2);
+		
+		NonOverlappingConstraint constraint1 = new NonOverlappingConstraint(testTerm, "must not be offered at same time", constrainedClasses);
+		testTerm.addConstraint(allPermissions, constraint1);
+		assertEquals("TR 9:40AM - 12:10PM", class1.getClassTime());
+		assertEquals("MWF 10:20AM - 12:40PM", class2.getClassTime());
+		assertEquals(true, constraint1.evaluateConstraint(allPermissions));
+		
+		constrainedClasses.remove(class1);
+		constrainedClasses.add(class3);
+		MustOverlapConstraint constraint2 = new MustOverlapConstraint(testTerm, "must be offered at same time", constrainedClasses);
+		testTerm.addConstraint(allPermissions, constraint2);
+		assertEquals(true, constraint1.evaluateConstraint(allPermissions));
+		
+		
+		
+		MustBeOfferedConstraint constraint3 = new MustBeOfferedConstraint(testTerm, "must be offered", constrainedClasses);
+		testTerm.addConstraint(allPermissions, constraint3);
+		assertEquals(true, constraint1.evaluateConstraint(allPermissions));
+	
+		assertEquals(3, testTerm.getConstraints().size());
+		
+		assertEquals(true, testTerm.checkClassConstraints(allPermissions));
 		
 	}
 

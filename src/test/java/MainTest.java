@@ -22,12 +22,14 @@ class MainTest
 	ClassInstance class3;
 	ClassInstance class4;
 	User currentUser;
+
 	
 	@BeforeEach
 	void setUp() throws Exception
 	{	
 		main = new Main();
 		currentUser = new Registrar("Jacob Johnson", " ", " ");
+	
 		main.setCurrentUser(currentUser);
 		DepartmentHead userDeptHead = new DepartmentHead("Michael Bradshaw", "CSDeptHead", "dragonsAreCool");
 		Department userHolder = new Department(userDeptHead, "CSC");
@@ -52,13 +54,13 @@ class MainTest
 		tagArray.add("L");
 		
 		testTerm = new Term("Spring", 2025);
-		main.addTerm(testTerm);
+		main.addTerm(currentUser, testTerm);
 		
 		Course courseTest = new Course("FRE270", "Group Conversation", tagArray);
 		main.addCourse(courseTest);
 		
 		class1 = new ClassInstance(courseTest, testTerm, instructorTest, "TR 9:40AM - 12:10PM", roomTest, deptTest);
-		testTerm.addClass(class1);
+		testTerm.addClass(currentUser, class1);
 		main.addClassInstance(class1);
 		
 		
@@ -80,7 +82,7 @@ class MainTest
 		main.addCourse(courseTest2);
 		
 		class2 = new ClassInstance(courseTest2, testTerm, instructorTest2, "MWF 10:20AM - 12:40PM", roomTest2, deptTest2);
-		testTerm.addClass(class2);
+		testTerm.addClass(currentUser, class2);
 		main.addClassInstance(class2);
 		
 		DepartmentHead deptHeadTest3 = new DepartmentHead("HeadMan", "BigBos", "IHaveSevereImposterSyndrome");
@@ -98,13 +100,13 @@ class MainTest
 		tags3.add("D");
 		
 		testTerm2 = new Term("Fall", 2025);
-		main.addTerm(testTerm2);
+		main.addTerm(currentUser, testTerm2);
 		
 		Course courseTest3 = new Course("DSC", "Impacts of Analytics on Human body", tags3);
 		main.addCourse(courseTest3);
 		
 		class3 = new ClassInstance(courseTest3, testTerm2, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest3);
-		testTerm2.addClass(class3);
+		testTerm2.addClass(currentUser, class3);
 		main.addClassInstance(class3);
 		
 		DepartmentHead deptHeadTest4 = new DepartmentHead("TA", "ImJustAGraduateStudent", "Im drowning in work");
@@ -119,13 +121,13 @@ class MainTest
 		tags4.add("D");
 		
 		testTerm3 = new Term("Winter", 2026);
-		main.addTerm(testTerm3);
+		main.addTerm(currentUser, testTerm3);
 		
 		Course courseTest4 = new Course("DLM110b", "How to cope with college", tags4);
 		main.addCourse(courseTest4);
 		
 		class4 = new ClassInstance(courseTest4, testTerm3, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest4);
-		testTerm3.addClass(class4);
+		testTerm3.addClass(currentUser, class4);
 		main.addClassInstance(class4);
 	}
 
@@ -147,8 +149,9 @@ class MainTest
 	void testGetAllPreviousTerms()
 	{
 		
-		testTerm2.markAsFinal();
-		testTerm3.markAsFinal();
+		//TODO
+		testTerm2.markAsFinal(currentUser);
+		testTerm3.markAsFinal(currentUser);
 		
 		ArrayList<Term> previousTerms = main.getAllPreviousTerms();
 		
@@ -290,7 +293,7 @@ class MainTest
 		ArrayList<ClassInstance> classInstances = main.getAllClasses();
 		assertEquals(4, classInstances.size());
 		
-		ClassInstance duplicatedClass = class1.getDeepCopy();
+		ClassInstance duplicatedClass = class1.getDeepCopy(currentUser);
 		
 		main.addClassInstance(duplicatedClass);
 		assertEquals(4, classInstances.size());
@@ -318,7 +321,7 @@ class MainTest
 		ArrayList<Term> terms = main.getAllTerms();
 		assertEquals(3, terms.size());
 		
-		main.addTerm(duplicateTerm);
+		main.addTerm(currentUser, duplicateTerm);
 		assertEquals(3, terms.size());
 		
 	}

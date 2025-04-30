@@ -24,9 +24,9 @@ class RegistrarTest
 	
 	
 	@Test
-	void testCanReadGeneralInfo()
+	void testCanFinalize()
 	{
-		assertEquals(true, registrar.getCanReadGeneralInfo());
+		assertEquals(true, registrar.getCanFinalize());
 		
 	}
 	

@@ -38,7 +38,7 @@ public abstract class Constraint
 		return constraintName;
 	}
 
-	public abstract Boolean evaluateConstraint();
+	public abstract Boolean evaluateConstraint(User u);
 	
 	/**
 	 * @return the term

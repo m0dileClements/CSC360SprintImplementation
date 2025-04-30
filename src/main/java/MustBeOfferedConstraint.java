@@ -17,25 +17,26 @@ public class MustBeOfferedConstraint extends Constraint
 	}
 
 	@Override
-	public Boolean evaluateConstraint()
+	public Boolean evaluateConstraint(User u)
 	{
 		Boolean isOffered = true;
-		ArrayList<ClassInstance> termClasses = term.getAllClasses();
-		ArrayList<ClassInstance> classesOffered = new ArrayList<ClassInstance>();
-		
-		for(int i = 0; i < classes.size(); i++) {
-			Boolean classOffered = false;
-			for(int j = 0; j < termClasses.size(); j++) {
-				if(termClasses.get(j).toString().equals(classes.get(i).toString())) {
-					classOffered = true;
-				}
-			}
-			if(!classOffered) {
-				isOffered = false;
-			}
+		if(u.getCanFinalize()) {
+			ArrayList<ClassInstance> termClasses = term.getAllClasses();
+			ArrayList<ClassInstance> classesOffered = new ArrayList<ClassInstance>();
 			
+			for(int i = 0; i < classes.size(); i++) {
+				Boolean classOffered = false;
+				for(int j = 0; j < termClasses.size(); j++) {
+					if(termClasses.get(j).toString().equals(classes.get(i).toString())) {
+						classOffered = true;
+					}
+				}
+				if(!classOffered) {
+					isOffered = false;
+				}
+				
+			}
 		}
-		
 		return isOffered;
 	}
 

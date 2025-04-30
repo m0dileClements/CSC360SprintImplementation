@@ -24,16 +24,17 @@ public class NonOverlappingConstraint extends Constraint
 
 
 	@Override
-	public Boolean evaluateConstraint() {
+	public Boolean evaluateConstraint(User u) {
 		Boolean haveConflicts = false;
 		
-		if(classes.size()== 2) {
-			if(term.checkTimeConflict(classes.get(0), classes.get(1))|| term.checkTimeConflict(classes.get(1), classes.get(0))) {
-				haveConflicts = true;
+		if(u.getCanFinalize()) {
+			if(classes.size()== 2) {
+				if(term.checkTimeConflict(classes.get(0), classes.get(1))) {
+					haveConflicts = true;
+				}
+				return !haveConflicts;
 			}
-			return !haveConflicts;
 		}
-		
 		return haveConflicts;
 		
 	}

@@ -10,23 +10,25 @@ public class Term
 	Boolean isFinalized;
 	ArrayList<Constraint> constraints;
 	
-	public Term() {}
 	
 	public Term(String semester, int year) {
-		this.semester = semester;
-		this.year = year;
-		this.allClasses = new ArrayList<ClassInstance>();
-		this.isFinalized = false;
-		this.constraints = new ArrayList<Constraint>();
-		
+			this.semester = semester;
+			this.year = year;
+			this.allClasses = new ArrayList<ClassInstance>();
+			this.isFinalized = false;
+			this.constraints = new ArrayList<Constraint>();
 	}
 	
-	public void addClass(ClassInstance addClass) {
-		allClasses.add(addClass);		
+	public void addClass(User u, ClassInstance addClass) {
+		if(u.getCanCreate() && !isFinalized) {
+			allClasses.add(addClass);	
+		}
 	}
 	
-	public void removeClassfromTerm(ClassInstance remCourse) {
-		allClasses.remove(remCourse);
+	public void removeClassfromTerm(User u, ClassInstance remCourse) {
+		if(u.getCanDelete()&& !isFinalized) {
+			allClasses.remove(remCourse);
+		}
 	}
 	
 	//returns a list of classes based on their time
@@ -69,22 +71,7 @@ public class Term
 			for (int j = 0; j< instructorCourses.size(); j++) {
 				for(int m= j; m< instructorCourses.size(); m++) {
 					
-					Boolean isSameTime = instructorCourses.get(j).getClassTime().toString().equals(instructorCourses.get(m).getClassTime().toString());
-					Boolean endsDuring = false;
-					Boolean startsDuring = false;
-					Boolean isSameDay = hasOverlappingDays(instructorCourses.get(j).getClassTime(), instructorCourses.get(m).getClassTime());
-					
-					if((checkIsTimeBefore(instructorCourses.get(j).getEndTime(), instructorCourses.get(m).getEndTime()) && checkIsTimeBefore(instructorCourses.get(m).getStartTime(), instructorCourses.get(j).getEndTime())) || instructorCourses.get(m).getStartTime().equals(instructorCourses.get(j).getStartTime())) {
-						endsDuring = true;
-					}
-					
-					if((checkIsTimeBefore(instructorCourses.get(m).getStartTime(), instructorCourses.get(j).getStartTime()) && checkIsTimeBefore(instructorCourses.get(j).getStartTime(), instructorCourses.get(m).getEndTime())) || instructorCourses.get(m).getEndTime().equals(instructorCourses.get(j).getEndTime())) {
-						startsDuring = true;
-					}
-					
-					
-					
-					if(m != j && (isSameTime || endsDuring || startsDuring) && isSameDay) {
+					if(m != j && (checkTimeConflict(instructorCourses.get(m),instructorCourses.get(j)) )) {
 						if(!instructorConflictList.contains(instructorCourses.get(j))) {
 							instructorConflictList.add(instructorCourses.get(j));
 						}
@@ -128,20 +115,6 @@ public class Term
 			
 			for (int j = 0; j< roomsClasses.size(); j++) {
 				for(int m= j; m< roomsClasses.size(); m++) {
-					
-//					checkTimeConflict
-//					Boolean isSameTime = roomsClasses.get(j).getClassTime().toString().equals(roomsClasses.get(m).getClassTime().toString());
-//					Boolean endsDuring = false;
-//					Boolean startsDuring = false;
-//					Boolean isSameDay = hasOverlappingDays(roomsClasses.get(j).getClassTime(), roomsClasses.get(m).getClassTime());
-//					
-//					if((checkIsTimeBefore(roomsClasses.get(j).getEndTime(), roomsClasses.get(m).getEndTime()) && checkIsTimeBefore(roomsClasses.get(m).getStartTime(), roomsClasses.get(j).getEndTime())) || roomsClasses.get(m).getStartTime().equals(roomsClasses.get(j).getStartTime())) {
-//						endsDuring = true;
-//					}
-//					
-//					if((checkIsTimeBefore(roomsClasses.get(m).getStartTime(), roomsClasses.get(j).getStartTime()) && checkIsTimeBefore(roomsClasses.get(j).getStartTime(), roomsClasses.get(m).getEndTime())) || roomsClasses.get(m).getEndTime().equals(roomsClasses.get(j).getEndTime())) {
-//						startsDuring = true;
-//					}
 					
 					
 					if(m != j && (checkTimeConflict(roomsClasses.get(m),roomsClasses.get(j)) )) {
@@ -220,12 +193,13 @@ public class Term
 	}
 	
 	//check if courses that have course constraints do not have the same time
-	public Boolean checkClassConstraints() {
+	public Boolean checkClassConstraints(User u) {
 		Boolean haveConflicts = false;
 		
-		for(int i = 0; i < allClasses.size(); i++) {
-			
-			//TODO
+		for(int i = 0; i < constraints.size(); i++) {
+			if(constraints.get(i).evaluateConstraint(u) == true) {
+				haveConflicts = true;
+			}
 			
 		}
 		
@@ -274,17 +248,20 @@ public class Term
 	}
 	
 	//check instructor hours, check class constraints, get time room conflicts, and get instructor conflicts
-	public Boolean checkCorrectness() {
-		ArrayList<ClassInstance> instructorConflicts = getInstructorConflicts();
-		ArrayList<ClassInstance> timeRoomConflicts = getTimeRoomConflicts();
-		Boolean hasClassConstraintsConflict = checkClassConstraints();
-		
-		if(instructorConflicts.size() == 0 && timeRoomConflicts.size() == 0 && !hasClassConstraintsConflict) {
-			return true;
+	public Boolean checkCorrectness(User u) {
+		if(u.getCanReadPendingInfo()) {
+			ArrayList<ClassInstance> instructorConflicts = getInstructorConflicts();
+			ArrayList<ClassInstance> timeRoomConflicts = getTimeRoomConflicts();
+			Boolean hasClassConstraintsConflict = checkClassConstraints(u);
+			
+			if(instructorConflicts.size() == 0 && timeRoomConflicts.size() == 0 && !hasClassConstraintsConflict) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
 	
 	//returns a list of all of the instructors in one term
@@ -345,30 +322,32 @@ public class Term
 	
 	//sets all classes at once
 	public void setAllClasses(ArrayList<ClassInstance> classes) {
-		if(this.getAllClasses()!= null) {
-			this.allClasses.clear();
-		}
-		
+		this.allClasses.clear();
 		this.allClasses = classes;
 	}
 	
 	
 	//marks a term as final
-	public void markAsFinal() {
-		this.isFinalized = true;
+	public void markAsFinal(User u) {
+		if(u.getCanFinalize()) {
+			this.isFinalized = true;
+		}
 	}
 	
-	//TODO add tests
-	public void removeConstraint(Constraint constraint) {
-		for(int i = 0; i<constraints.size(); i++) {
-			if(constraints.get(i).toString().equals(constraint.toString())) {
-				constraints.remove(i);
+	public void removeConstraint(User u, Constraint constraint) {
+		if(u.getCanDelete()) {
+			for(int i = 0; i<constraints.size(); i++) {
+				if(constraints.get(i).toString().equals(constraint.toString())) {
+					constraints.remove(i);
+				}
 			}
 		}
 	}
 	
-	public void addConstraint(Constraint constraint) {
-		constraints.add(constraint);
+	public void addConstraint(User u, Constraint constraint) {
+		if(u.getCanCreate()) {
+			constraints.add(constraint);
+		}
 	}
 	
 	//Getter and Setter methods for relevant variables

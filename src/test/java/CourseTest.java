@@ -22,6 +22,7 @@ class CourseTest
 	@BeforeEach
 	void setUp() throws Exception
 	{
+		
 		tags = new ArrayList<String>();
 		tags.add("E1");
 		tags.add("A");
@@ -48,9 +49,9 @@ class CourseTest
 		ArrayList<String> tags2 = new ArrayList<String>();
 		tags2.add("E1");
 		tags2.add("G");
-		Term termTest2 = new Term("Spring", 2025);
+		//Term termTest2 = new Term("Spring", 2025);
 		Course courseTest2 = new Course("CSC360", "Software Design", tags2);
-		classInstance2 = new ClassInstance(courseTest2, termTest2, instructorTest2, "TR 10:20AM - 12:40PM", roomTest2, deptTest2);
+		classInstance2 = new ClassInstance(courseTest2, termTest, instructorTest2, "TR 10:20AM - 12:40PM", roomTest2, deptTest2);
 		
 	}
 

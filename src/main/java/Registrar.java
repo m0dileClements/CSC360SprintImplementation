@@ -7,7 +7,7 @@ public class Registrar extends User
 	public Registrar(String name, String loginInformation, String password) {
 		//TODO super here
 		super(name, loginInformation, password);
-		this.canReadGeneralInfo = true;
+		this.canFinalize = true;
 		this.canReadPendingInfo = true;
 		this.canEdit = true;
 		this.canCreate = true;

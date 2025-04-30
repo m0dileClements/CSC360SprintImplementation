@@ -6,7 +6,7 @@ public class User
 	String name;
 	String username;
 	String password;
-	Boolean canReadGeneralInfo;
+	Boolean canFinalize;
 	Boolean canReadPendingInfo;
 	Boolean canEdit;
 	Boolean canCreate;
@@ -17,7 +17,7 @@ public class User
 		this.name = name;
 		this.username = username;
 		this.password = password;
-		canReadGeneralInfo = true;
+		canFinalize = false;
 		canReadPendingInfo = false;
 		canEdit = false;
 		canCreate = false;
@@ -95,18 +95,18 @@ public class User
 	/**
 	 * @return the canReadGeneralInfo
 	 */
-	public Boolean getCanReadGeneralInfo()
+	public Boolean getCanFinalize()
 	{
-		return canReadGeneralInfo;
+		return canFinalize;
 	}
 
 
 	/**
 	 * @param canReadGeneralInfo the canReadGeneralInfo to set
 	 */
-	public void setCanReadGeneralInfo(Boolean canReadGeneralInfo)
+	public void setCanFinalize(Boolean canReadGeneralInfo)
 	{
-		this.canReadGeneralInfo = canReadGeneralInfo;
+		this.canFinalize = canReadGeneralInfo;
 	}
 
 

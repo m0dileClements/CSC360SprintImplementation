@@ -13,10 +13,13 @@ class MustBeOfferedConstraintTest
 	ClassInstance class1;
 	ClassInstance class2;
 	ClassInstance class3;
+	Registrar allPermissions;
 	
 	@BeforeEach
 	void setUp() throws Exception
 	{
+		allPermissions = new Registrar("", "", "");
+		
 		DepartmentHead deptHeadTest = new DepartmentHead("Alison Conelly", "FrenchGal", "Oui0ui");
 		Department deptTest = new Department(deptHeadTest, "French");
 		Instructor instructorTest = new Instructor("Allison Conelly", deptTest);
@@ -55,42 +58,42 @@ class MustBeOfferedConstraintTest
 	@Test
 	void testEvaluateConstraints()
 	{
-		testTerm.addClass(class1);
-		testTerm.addClass(class2);
-		testTerm.addClass(class3);
+		testTerm.addClass(allPermissions,class1);
+		testTerm.addClass(allPermissions,class2);
+		testTerm.addClass(allPermissions,class3);
 		ArrayList<ClassInstance> constrainedClasses = new ArrayList<ClassInstance>();
 		constrainedClasses.add(class2);
 		
 		MustBeOfferedConstraint constraint1 = new MustBeOfferedConstraint(testTerm, "must be offered", constrainedClasses);
-		testTerm.addConstraint(constraint1);
+		testTerm.addConstraint(allPermissions, constraint1);
 		assertEquals("must be offered", constraint1.getConstraintName());
 		
 		
-		assertEquals(true, constraint1.evaluateConstraint());
-		testTerm.removeClassfromTerm(class2);
+		assertEquals(true, constraint1.evaluateConstraint(allPermissions));
+		testTerm.removeClassfromTerm(allPermissions, class2);
 		
-		assertEquals(false, constraint1.evaluateConstraint());
+		assertEquals(false, constraint1.evaluateConstraint(allPermissions));
 		
-		testTerm.addClass(class2);
+		testTerm.addClass(allPermissions, class2);
 		
 		constraint1.addConstraintClass(class1);
-		assertEquals(true, constraint1.evaluateConstraint());
-		testTerm.removeClassfromTerm(class2);
+		assertEquals(true, constraint1.evaluateConstraint(allPermissions));
+		testTerm.removeClassfromTerm(allPermissions, class2);
 		
-		assertEquals(false, constraint1.evaluateConstraint());
+		assertEquals(false, constraint1.evaluateConstraint(allPermissions));
 	}
 	
 	void testToString()
 	{
-		testTerm.addClass(class1);
-		testTerm.addClass(class2);
-		testTerm.addClass(class3);
+		testTerm.addClass(allPermissions, class1);
+		testTerm.addClass(allPermissions, class2);
+		testTerm.addClass(allPermissions, class3);
 		ArrayList<ClassInstance> constrainedClasses = new ArrayList<ClassInstance>();
 		constrainedClasses.add(class2);
 		constrainedClasses.add(class3);
 		
 		MustBeOfferedConstraint constraint1 = new MustBeOfferedConstraint(testTerm, "must be offered", constrainedClasses);
-		testTerm.addConstraint(constraint1);
+		testTerm.addConstraint(allPermissions, constraint1);
 		assertEquals("MustBeOfferedConstraint [term=Term [semester=Spring, year=2025], constraintName=must be offered]", constraint1.toString());
 		
 	}

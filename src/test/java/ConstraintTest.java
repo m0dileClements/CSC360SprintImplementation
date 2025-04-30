@@ -47,7 +47,7 @@ class ConstraintTest
 		termTest = new Term("Spring", 2025);
 		courseTest = new Course("Bio110", "Intro to Biology", tags);
 		classInstance1 = new ClassInstance(courseTest, termTest, instructorTest, "MWF 10:20AM - 12:40PM", roomTest, deptTest);
-		termTest.addClass(classInstance1);
+		termTest.addClass(u, classInstance1);
 		
 		//setup for Class Instance 2
 		deptHeadTest2 = new DepartmentHead("HeadWoman", "BossBabe", "IamAw3some");
@@ -59,7 +59,7 @@ class ConstraintTest
 		tags2.add("S");
 		courseTest2 = new Course("Bio210", "Environmental Science", tags);
 		classInstance2 = new ClassInstance(courseTest2, termTest, instructorTest2, "MWF 10:20AM - 12:40PM", roomTest2, deptTest2);
-		termTest.addClass(classInstance2);
+		termTest.addClass(u, classInstance2);
 		constraintTest = new NonOverlappingConstraint(termTest,"No biologies together", termTest.getAllClasses());
 		
 	}

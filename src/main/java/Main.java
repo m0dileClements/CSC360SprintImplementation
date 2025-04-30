@@ -49,28 +49,28 @@ public class Main
 		return previousTerms;
 	}
 	
+	
 	//creates an additional term with the same semester name + " copy" that contains all the same classes
 	public void createFromPrevTerm(Term prevTerm) {
 		if(currentUser.getCanCreate()) {
-			Term newTerm = new Term();
+			Term newTerm;
 			for(int i = 0; i < allTerms.size(); i++) {
 				if(prevTerm.toString().equals(allTerms.get(i).toString())) {
-					newTerm.setSemester(prevTerm.getSemester()+" copy");
-					newTerm.setYear(prevTerm.getYear());
+					String semester = prevTerm.getSemester() + " copy";
+					int year = prevTerm.getYear();
+					newTerm = new Term(semester, year);
 					ArrayList<ClassInstance> prevTermClasses = prevTerm.getAllClasses();
 					ArrayList<ClassInstance> newTermClasses = new ArrayList<ClassInstance>();
 					
 					for(int j = 0; j<prevTermClasses.size(); j++) {
-						ClassInstance newClass = prevTermClasses.get(j).getDeepCopy();
+						ClassInstance newClass = prevTermClasses.get(j).getDeepCopy(currentUser);
 						newTermClasses.add(newClass);
 					}
 					newTerm.setAllClasses(newTermClasses);
 					newTerm.setIsFinalized(false);
-					
+					allTerms.add(newTerm);
 				}
 			}
-			
-			allTerms.add(newTerm);
 		}
 	}
 	
@@ -102,13 +102,11 @@ public class Main
 		//finds the specific Term based on string
 		
 		ArrayList<ClassInstance> targetClasses = new ArrayList<ClassInstance>();
-		if(currentUser.getCanReadPendingInfo()) {
 			for (int i = 0; i < allTerms.size(); i++) {
 				if(term.toString().equals(allTerms.get(i).toString())) {
 					targetClasses = allTerms.get(i).getAllClasses();
 				}
 			}
-		}
 		return targetClasses;
 		
 	}
@@ -185,15 +183,17 @@ public class Main
 		return allTerms;
 	}
 	
-	public void addTerm(Term term) {
-		Boolean alreadyExists = false;
-		for(int i = 0; i < allTerms.size(); i++) {
-			if(term.toString().equals(allTerms.get(i).toString())) {
-				alreadyExists = true;
+	public void addTerm(User u, Term term) {
+		if (u.getCanCreate()){
+			Boolean alreadyExists = false;
+			for(int i = 0; i < allTerms.size(); i++) {
+				if(term.toString().equals(allTerms.get(i).toString())) {
+					alreadyExists = true;
+				}
 			}
-		}
-		if (!alreadyExists) {
-			allTerms.add(term);
+			if (!alreadyExists) {
+				allTerms.add(term);
+			}
 		}
 	}
 
