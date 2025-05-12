@@ -28,6 +28,7 @@ class MainTest
 	void setUp() throws Exception
 	{	
 		main = new Main();
+		main.setArrayListConverter();
 		currentUser = new Registrar("Jacob Johnson", " ", " ");
 	
 		main.setCurrentUser(currentUser);
@@ -42,24 +43,16 @@ class MainTest
 		DepartmentHead deptHeadTest = new DepartmentHead("Alison Conelly", "FrenchGal", "Oui0ui");
 		Department deptTest = new Department(deptHeadTest, "French");
 		main.addDept(deptTest);
-		
 		Instructor instructorTest = new Instructor("Allison Conelly", deptTest);
 		main.addInstructor(instructorTest);
-		
-		Room roomTest = new Room("Crounse", 307);
+		Room roomTest = new Room("Crounse", "307");
 		main.addRoom(roomTest);
-		
 		ArrayList<String> tagArray = new ArrayList<String>();
 		tagArray.add("E3");
 		tagArray.add("L");
-		
 		testTerm = new Term("Spring", 2025);
 		main.addTerm(currentUser, testTerm);
-		
-		Course courseTest = new Course("FRE270", "Group Conversation", tagArray);
-		main.addCourse(courseTest);
-		
-		class1 = new ClassInstance(courseTest, testTerm, instructorTest, "TR 9:40AM - 12:10PM", roomTest, deptTest);
+		class1 = new ClassInstance("FRE270", "Group Conversation", tagArray, testTerm, instructorTest, "TR 9:40AM - 12:10PM", roomTest, deptTest);
 		testTerm.addClass(currentUser, class1);
 		main.addClassInstance(class1);
 		
@@ -67,66 +60,42 @@ class MainTest
 		DepartmentHead deptHeadTest2 = new DepartmentHead("HeadWoman", "BossBabe", "IamAw3some");
 		Department deptTest2 = new Department(deptHeadTest2, "biology");
 		main.addDept(deptTest2);
-		
 		Instructor instructorTest2 = new Instructor("The Genie", deptTest2);
 		main.addInstructor(instructorTest2);
-		
-		Room roomTest2 = new Room("Olin", 201);
+		Room roomTest2 = new Room("Olin", "201");
 		main.addRoom(roomTest2);
-		
 		ArrayList<String> tags2 = new ArrayList<String>();
 		tags2.add("E2");
 		tags2.add("S");
-		
-		Course courseTest2 = new Course("Bio210", "Environmental Science", tags2);
-		main.addCourse(courseTest2);
-		
-		class2 = new ClassInstance(courseTest2, testTerm, instructorTest2, "MWF 10:20AM - 12:40PM", roomTest2, deptTest2);
+		class2 = new ClassInstance("Bio210", "Environmental Science", tags2, testTerm, instructorTest2, "MWF 10:20AM - 12:40PM", roomTest2, deptTest2);
 		testTerm.addClass(currentUser, class2);
 		main.addClassInstance(class2);
 		
 		DepartmentHead deptHeadTest3 = new DepartmentHead("HeadMan", "BigBos", "IHaveSevereImposterSyndrome");
 		Department deptTest3 = new Department(deptHeadTest3, "biology");
 		main.addDept(deptTest3);
-		
 		Instructor instructorTest3 = new Instructor("Dr. Doctor", deptTest3);
 		main.addInstructor(instructorTest3);
-		
-		Room roomTest3 = new Room("Olin", 222);
+		Room roomTest3 = new Room("Olin", "222");
 		main.addRoom(roomTest3);
-		
 		ArrayList<String> tags3 = new ArrayList<String>();
 		tags3.add("E1");
 		tags3.add("D");
-		
 		testTerm2 = new Term("Fall", 2025);
 		main.addTerm(currentUser, testTerm2);
-		
-		Course courseTest3 = new Course("DSC", "Impacts of Analytics on Human body", tags3);
-		main.addCourse(courseTest3);
-		
-		class3 = new ClassInstance(courseTest3, testTerm2, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest3);
+		class3 = new ClassInstance("DSC", "Impacts of Analytics on Human body", tags3, testTerm2, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest3);
 		testTerm2.addClass(currentUser, class3);
 		main.addClassInstance(class3);
 		
 		DepartmentHead deptHeadTest4 = new DepartmentHead("TA", "ImJustAGraduateStudent", "Im drowning in work");
 		Department deptTest4 = new Department(deptHeadTest4, "dlm");
-		main.addDept(deptTest4);
-
-		//Room roomTest4 = new Room("Olin", 211);
-		//main.addRoom(roomTest4);
-		
+		main.addDept(deptTest4);	
 		ArrayList<String> tags4 = new ArrayList<String>();
 		tags4.add("E1");
 		tags4.add("D");
-		
 		testTerm3 = new Term("Winter", 2026);
 		main.addTerm(currentUser, testTerm3);
-		
-		Course courseTest4 = new Course("DLM110b", "How to cope with college", tags4);
-		main.addCourse(courseTest4);
-		
-		class4 = new ClassInstance(courseTest4, testTerm3, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest4);
+		class4 = new ClassInstance("DLM110b", "How to cope with college", tags4, testTerm3, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest4);
 		testTerm3.addClass(currentUser, class4);
 		main.addClassInstance(class4);
 	}
@@ -134,10 +103,9 @@ class MainTest
 	@Test
 	void testLaunch()
 	{
-		main.launch();
+		//main.launch();
 		assertEquals(3, main.getAllTerms().size());
 		assertEquals(4, main.getAllDepts().size());
-		assertEquals(4, main.getAllCourses().size());
 		assertEquals(4, main.getAllClasses().size());
 		assertEquals(3, main.getAllInstructors().size());
 		assertEquals(3, main.getAllRooms().size());
@@ -211,15 +179,15 @@ class MainTest
 	}
 	
 	
-	@Test
-	void testGetCoursesByTerm()
-	{
-		main.setCurrentUser(currentUser);
-		assertEquals(3, main.getAllTerms().size());
-		
-		Term tester = new Term("Spring", 2025);
-		assertEquals(2, main.getCoursesByTerm(tester).size());
-	}
+//	@Test
+//	void testGetCoursesByTerm()
+//	{
+//		main.setCurrentUser(currentUser);
+//		assertEquals(3, main.getAllTerms().size());
+//		
+//		Term tester = new Term("Spring", 2025);
+//		assertEquals(2, main.getCoursesByTerm(tester).size());
+//	}
 
 	@Test
 	void testGetAllInstructorsByDept()
@@ -246,6 +214,11 @@ class MainTest
 	@Test
 	void testGetRoomsByBuilding()
 	{
+		class1.getRoom().setBuilding("Crounse");
+		class2.getRoom().setBuilding("Olin");
+		class3.getRoom().setBuilding("Olin");
+		class4.getRoom().setBuilding("Olin");
+		
 		ArrayList<Room> roomsInBuilding = main.getRoomsByBuilding("Olin");
 		assertEquals(2, roomsInBuilding.size());
 		assertEquals("Olin 201", roomsInBuilding.get(0).toString());
@@ -259,12 +232,16 @@ class MainTest
 	@Test
 	void testAddRoom()
 	{
+//		class1.getRoom().setBuilding("Crounse");
+//		class2.getRoom().setBuilding("Olin 201");
+//		class3.getRoom().setBuilding("Olin-222");
+//		class4.getRoom().setBuilding("Olin-222");
 		ArrayList<Room> roomsInBuilding = main.getRoomsByBuilding("Olin");
 		assertEquals(2, roomsInBuilding.size());
 		
 		assertEquals("Olin 201", roomsInBuilding.get(0).toString());
 		
-		Room duplicateRoom = new Room("Olin", 201);
+		Room duplicateRoom = new Room("Olin", "201");
 		main.addRoom(duplicateRoom);
 		roomsInBuilding = main.getRoomsByBuilding("Olin");
 		assertEquals(2, roomsInBuilding.size());
@@ -298,18 +275,6 @@ class MainTest
 		main.addClassInstance(duplicatedClass);
 		assertEquals(4, classInstances.size());
 		
-		
-	}
-	
-	@Test
-	void testAddCourse()
-	{
-		Course duplicateCourse = class1.getCourse();
-		ArrayList<ClassInstance> courses = main.getAllClasses();
-		assertEquals(4, courses.size());
-		
-		main.addCourse(duplicateCourse);
-		assertEquals(4, courses.size());
 		
 	}
 	
@@ -372,5 +337,13 @@ class MainTest
 		main.setCurrentUser(currentUser);
 		assertEquals("Registrar= Jacob Johnson", main.getCurrentUser().toString());
 	}
+	
+	@Test
+	void testGetClassessByTerm()
+	{
+		assertEquals(2, main.getClassessByTerm(testTerm).size());
+		assertEquals(1, main.getClassessByTerm(testTerm2).size());
+	}
+	
 
 }

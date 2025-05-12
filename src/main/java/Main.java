@@ -8,34 +8,39 @@ public class Main
 	ArrayList<User> allUsers;
 	ArrayList<Term> allTerms;
 	ArrayList<Department> allDepts;
-	ArrayList<Course> allCourses;
 	ArrayList<ClassInstance> allClasses;
 	ArrayList<Instructor> allInstructors;
 	ArrayList<Room> allRooms;
 	User currentUser;
+	Converter currentConverter;
 	
 	public Main() {
 		allUsers = new ArrayList<User>();
 		allTerms = new ArrayList<Term>();
 		allDepts = new ArrayList<Department>();
-		allCourses = new ArrayList<Course>();
+		//allCourses = new ArrayList<Course>();
 		allClasses = new ArrayList<ClassInstance>();
 		allInstructors = new ArrayList<Instructor>();
 		allRooms = new ArrayList<Room>();		
 	}
 	
-	public static void main(String[] args)
-	{}
+	public void setArrayListConverter() {
+		currentConverter = new ArrayListConverter();
+	}
+	
+	public void setRestServerConverter() {
+		currentConverter = new RestServerConverter();
+	}
 	
 	public void launch() {
 		Main main = new Main();
-		ArrayListConverter converter = new ArrayListConverter();
-		converter.clearData(main);
-		converter.loadData(main);
-//		RestServerConverter converter = new RestServerConverter();
-//		converter.clearData(main);
-//		converter.loadData(main);
-		
+		currentConverter.clearData(main);
+		currentConverter.loadData(main);
+		this.allTerms = main.getAllTerms();
+		this.allDepts = main.getAllDepts();
+		this.allClasses = main.getAllClasses();
+		this.allInstructors = main.getAllInstructors();
+		this.allRooms = main.getAllRooms();
 	}
 	
 	//returns a list of all of the previous semesters marked final
@@ -98,7 +103,7 @@ public class Main
 	}
 	
 	//returns a list of all of the courses within a given term
-	public ArrayList<ClassInstance> getCoursesByTerm(Term term) {
+	public ArrayList<ClassInstance> getClassessByTerm(Term term) {
 		//finds the specific Term based on string
 		
 		ArrayList<ClassInstance> targetClasses = new ArrayList<ClassInstance>();
@@ -197,25 +202,6 @@ public class Main
 		}
 	}
 
-	/**
-	 * @return the allCourses
-	 */
-	public ArrayList<Course> getAllCourses()
-	{
-		return allCourses;
-	}
-	
-	public void addCourse(Course course) {
-		Boolean alreadyExists = false;
-		for(int i = 0; i < allCourses.size(); i++) {
-			if(course.toString().equals(allCourses.get(i).toString())) {
-				alreadyExists = true;
-			}
-		}
-		if (!alreadyExists) {
-			allCourses.add(course);
-		}
-	}
 
 	/**
 	 * @return the allClasses
@@ -310,6 +296,22 @@ public class Main
 	public void setCurrentUser(User currentUser)
 	{
 		this.currentUser = currentUser;
+	}
+
+	/**
+	 * @return the currentConverter
+	 */
+	public Converter getConverter()
+	{
+		return currentConverter;
+	}
+
+	/**
+	 * @param currentConverter the currentConverter to set
+	 */
+	public void setConverter(Converter currentConverter)
+	{
+		this.currentConverter = currentConverter;
 	}
 	
 	

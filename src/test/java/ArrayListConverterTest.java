@@ -45,7 +45,7 @@ class ArrayListConverterTest
 		Instructor instructorTest = new Instructor("Allison Conelly", deptTest);
 		main.addInstructor(instructorTest);
 		
-		Room roomTest = new Room("Crounse", 307);
+		Room roomTest = new Room("Crounse", "307");
 		main.addRoom(roomTest);
 		
 		ArrayList<String> tagArray = new ArrayList<String>();
@@ -55,10 +55,10 @@ class ArrayListConverterTest
 		testTerm = new Term("Spring", 2025);
 		main.addTerm(createPermissions, testTerm);
 		
-		Course courseTest = new Course("FRE270", "Group Conversation", tagArray);
-		main.addCourse(courseTest);
+		//Course courseTest = new Course("FRE270", "Group Conversation", tagArray);
+		//main.addCourse(courseTest);
 		
-		class1 = new ClassInstance(courseTest, testTerm, instructorTest, "TR 9:40AM - 12:10PM", roomTest, deptTest);
+		class1 = new ClassInstance("FRE270", "Group Conversation", tagArray, testTerm, instructorTest, "TR 9:40AM - 12:10PM", roomTest, deptTest);
 		testTerm.addClass(createPermissions, class1);
 		main.addClassInstance(class1);
 		
@@ -70,17 +70,17 @@ class ArrayListConverterTest
 		Instructor instructorTest2 = new Instructor("The Genie", deptTest2);
 		main.addInstructor(instructorTest2);
 		
-		Room roomTest2 = new Room("Olin", 201);
+		Room roomTest2 = new Room("Olin", "201");
 		main.addRoom(roomTest2);
 		
 		ArrayList<String> tags2 = new ArrayList<String>();
 		tags2.add("E2");
 		tags2.add("S");
 		
-		Course courseTest2 = new Course("Bio210", "Environmental Science", tags2);
-		main.addCourse(courseTest2);
+		//Course courseTest2 = new Course("Bio210", "Environmental Science", tags2);
+		//main.addCourse(courseTest2);
 		
-		class2 = new ClassInstance(courseTest2, testTerm, instructorTest2, "MWF 10:20AM - 12:40PM", roomTest2, deptTest2);
+		class2 = new ClassInstance("Bio210", "Environmental Science", tags2, testTerm, instructorTest2, "MWF 10:20AM - 12:40PM", roomTest2, deptTest2);
 		testTerm.addClass(createPermissions, class2);
 		main.addClassInstance(class2);
 		
@@ -91,7 +91,7 @@ class ArrayListConverterTest
 		Instructor instructorTest3 = new Instructor("Dr. Doctor", deptTest3);
 		main.addInstructor(instructorTest3);
 		
-		Room roomTest3 = new Room("Olin", 222);
+		Room roomTest3 = new Room("Olin", "222");
 		main.addRoom(roomTest3);
 		
 		ArrayList<String> tags3 = new ArrayList<String>();
@@ -101,10 +101,10 @@ class ArrayListConverterTest
 		testTerm2 = new Term("Fall", 2025);
 		main.addTerm(createPermissions,testTerm2);
 		
-		Course courseTest3 = new Course("DSC", "Impacts of Analytics on Human body", tags3);
-		main.addCourse(courseTest3);
+		//Course courseTest3 = new Course("DSC", "Impacts of Analytics on Human body", tags3);
+		//main.addCourse(courseTest3);
 		
-		class3 = new ClassInstance(courseTest3, testTerm2, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest3);
+		class3 = new ClassInstance("DSC", "Impacts of Analytics on Human body", tags3, testTerm2, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest3);
 		testTerm2.addClass(createPermissions, class3);
 		main.addClassInstance(class3);
 		
@@ -122,10 +122,10 @@ class ArrayListConverterTest
 		testTerm3 = new Term("Winter", 2026);
 		main.addTerm(createPermissions, testTerm3);
 		
-		Course courseTest4 = new Course("DLM110b", "How to cope with college", tags4);
-		main.addCourse(courseTest4);
+		//Course courseTest4 = new Course("DLM110b", "How to cope with college", tags4);
+		//main.addCourse(courseTest4);
 		
-		class4 = new ClassInstance(courseTest4, testTerm3, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest3);
+		class4 = new ClassInstance("DLM110b", "How to cope with college", tags4, testTerm3, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest3);
 		testTerm3.addClass(createPermissions, class4);
 		main.addClassInstance(class4);
 		
@@ -138,7 +138,7 @@ class ArrayListConverterTest
 		assertEquals(1, main.getAllUsers().size());
 		assertEquals(3, main.getAllTerms().size());
 		assertEquals(3, main.getAllDepts().size());
-		assertEquals(4, main.getAllCourses().size());
+		//assertEquals(4, main.getAllCourses().size());
 		assertEquals(4, main.getAllClasses().size());
 		assertEquals(3, main.getAllInstructors().size());
 		assertEquals(3, main.getAllRooms().size());
@@ -149,7 +149,7 @@ class ArrayListConverterTest
 		assertEquals(0, main.getAllUsers().size());
 		assertEquals(0, main.getAllTerms().size());
 		assertEquals(0, main.getAllDepts().size());
-		assertEquals(0, main.getAllCourses().size());
+		//assertEquals(0, main.getAllCourses().size());
 		assertEquals(0, main.getAllClasses().size());
 		assertEquals(0, main.getAllInstructors().size());
 		assertEquals(0, main.getAllRooms().size());
@@ -165,7 +165,7 @@ class ArrayListConverterTest
 		assertEquals(0, main.getAllUsers().size());
 		assertEquals(0, main.getAllTerms().size());
 		assertEquals(0, main.getAllDepts().size());
-		assertEquals(0, main.getAllCourses().size());
+		//assertEquals(0, main.getAllCourses().size());
 		assertEquals(0, main.getAllClasses().size());
 		assertEquals(0, main.getAllInstructors().size());
 		assertEquals(0, main.getAllRooms().size());
@@ -177,7 +177,7 @@ class ArrayListConverterTest
 		//loaded data in the beforeEach to make sure all of the loaded data is the same. 
 		assertEquals(3, main.getAllTerms().size());
 		assertEquals(3, main.getAllDepts().size());
-		assertEquals(4, main.getAllCourses().size());
+		//assertEquals(4, main.getAllCourses().size());
 		assertEquals(4, main.getAllClasses().size());
 		assertEquals(3, main.getAllInstructors().size());
 		assertEquals(3, main.getAllRooms().size());

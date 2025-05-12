@@ -14,7 +14,7 @@ class ConstraintTest
 	Constraint constraintTest;
 	ClassInstance classInstance1;
 	ClassInstance classInstance2;
-	Course courseTest;
+	//Course courseTest;
 	Instructor instructorTest;
 	Room roomTest;
 	Department deptTest;
@@ -22,7 +22,7 @@ class ConstraintTest
 	ArrayList<String> tags;
 	Term termTest;
 	
-	Course courseTest2;
+	//Course courseTest2;
 	Instructor instructorTest2;
 	Room roomTest2;
 	Department deptTest2;
@@ -40,25 +40,23 @@ class ConstraintTest
 		deptHeadTest = new DepartmentHead("Grand Master of All Lords", "OhExaltedOne", "1Rul3All");
 		deptTest = new Department(deptHeadTest, "biology");
 		instructorTest = new Instructor("Robin Williams", deptTest);
-		roomTest = new Room("Young", 112);
+		roomTest = new Room("Young", "112");
 		tags = new ArrayList<String>();
 		tags.add("E1");
 		tags.add("A");
 		termTest = new Term("Spring", 2025);
-		courseTest = new Course("Bio110", "Intro to Biology", tags);
-		classInstance1 = new ClassInstance(courseTest, termTest, instructorTest, "MWF 10:20AM - 12:40PM", roomTest, deptTest);
+		classInstance1 = new ClassInstance("Bio110", "Intro to Biology", tags, termTest, instructorTest, "MWF 10:20AM - 12:40PM", roomTest, deptTest);
 		termTest.addClass(u, classInstance1);
 		
 		//setup for Class Instance 2
 		deptHeadTest2 = new DepartmentHead("HeadWoman", "BossBabe", "IamAw3some");
 		deptTest2 = new Department(deptHeadTest, "biology");
 		instructorTest2 = new Instructor("The Genie", deptTest);
-		roomTest2 = new Room("Olin", 201);
+		roomTest2 = new Room("Olin", "201");
 		tags2 = new ArrayList<String>();
 		tags2.add("E2");
 		tags2.add("S");
-		courseTest2 = new Course("Bio210", "Environmental Science", tags);
-		classInstance2 = new ClassInstance(courseTest2, termTest, instructorTest2, "MWF 10:20AM - 12:40PM", roomTest2, deptTest2);
+		classInstance2 = new ClassInstance("Bio210", "Environmental Science", tags, termTest, instructorTest2, "MWF 10:20AM - 12:40PM", roomTest2, deptTest2);
 		termTest.addClass(u, classInstance2);
 		constraintTest = new NonOverlappingConstraint(termTest,"No biologies together", termTest.getAllClasses());
 		
@@ -90,25 +88,23 @@ class ConstraintTest
 		deptHeadTest = new DepartmentHead("Alison Conelly", "FrenchGal", "Oui0ui");
 		deptTest = new Department(deptHeadTest, "French");
 		instructorTest = new Instructor("Allison Conelly", deptTest);
-		roomTest = new Room("Crounse", 307);
+		roomTest = new Room("Crounse", "307");
 		tags = new ArrayList<String>();
 		tags.add("E3");
 		tags.add("L");
 		termTest = new Term("Spring", 2025);
-		courseTest = new Course("FRE270", "Group Conversation", tags);
-		ClassInstance modifiedClassInstance1 = new ClassInstance(courseTest, termTest, instructorTest, "MWF 10:20AM - 12:40PM", roomTest, deptTest);
+		ClassInstance modifiedClassInstance1 = new ClassInstance("FRE270", "Group Conversation", tags, termTest, instructorTest, "MWF 10:20AM - 12:40PM", roomTest, deptTest);
 		
 		//setup for Class Instance 2
 		deptHeadTest2 = new DepartmentHead("Michael Bradshaw", "anonDragoLord", "IamAw3some");
 		deptTest2 = new Department(deptHeadTest, "CSC");
 		instructorTest2 = new Instructor("Michael Bradshaw", deptTest);
-		roomTest2 = new Room("Olin", 212);
+		roomTest2 = new Room("Olin", "212");
 		tags2 = new ArrayList<String>();
 		tags2.add("E1");
 		tags2.add("G");
 		termTest2 = new Term("Fall", 2025);
-		courseTest2 = new Course("CSC360", "Software Design", tags2);
-		ClassInstance modifiedClassInstance2 = new ClassInstance(courseTest2, termTest2, instructorTest2, "MWF 10:20AM - 12:40PM", roomTest2, deptTest2);
+		ClassInstance modifiedClassInstance2 = new ClassInstance("CSC360", "Software Design", tags2, termTest2, instructorTest2, "MWF 10:20AM - 12:40PM", roomTest2, deptTest2);
 		
 		ArrayList<ClassInstance> constrainedCourses = new ArrayList<ClassInstance>();
 		constrainedCourses.add(modifiedClassInstance1);
@@ -148,32 +144,32 @@ class ConstraintTest
 		for(int i = 0; i < constraintTest.getClasses().size(); i++) {
 			classStrings += constraintTest.getClasses().get(i);
 		}
-		assertEquals("ClassInstance [course=Bio110: Intro to Biology, Tags: E1, A, term=Term [semester=Spring, year=2025], instructor=Instructor [name=Robin Williams, "
-				+ "profDept=biology, hours=0.0], classTime=MWF 10:20AM - 12:40PM, room=Young 112, dept=Grand Master of All Lords: biology, classLength=7.0, hasFalseLimit=false]"
-				+ "ClassInstance [course=Bio210: Environmental Science, Tags: E1, A, term=Term [semester=Spring, year=2025], instructor=Instructor [name=The Genie, profDept=biology,"
-				+ " hours=0.0], classTime=MWF 10:20AM - 12:40PM, room=Olin 201, dept=Grand Master of All Lords: biology, classLength=7.0, hasFalseLimit=false]", classStrings);
+		assertEquals("ClassInstance [courseCode=Bio110: Intro to Biology, Tags: E1, A, term=Term [semester=Spring, "
+				+ "year=2025], instructor=Instructor [name=Robin Williams, profDept=biology, hours=0.0], classTime=MWF "
+				+ "10:20AM - 12:40PM, room=Young 112, dept=Grand Master of All Lords: biology, classLength=7.0, hasFalseLimit=false]"
+				+ "ClassInstance [courseCode=Bio210: Environmental Science, Tags: E1, A, term=Term [semester=Spring, year=2025], "
+				+ "instructor=Instructor [name=The Genie, profDept=biology, hours=0.0], classTime=MWF 10:20AM - 12:40PM, "
+				+ "room=Olin 201, dept=Grand Master of All Lords: biology, classLength=7.0, hasFalseLimit=false]", classStrings);
 		
 				deptHeadTest = new DepartmentHead("Alison Conelly", "FrenchGal", "Oui0ui");
 				deptTest = new Department(deptHeadTest, "French");
 				instructorTest = new Instructor("Allison Conelly", deptTest);
-				roomTest = new Room("Crounse", 307);
+				roomTest = new Room("Crounse" ,"307");
 				tags = new ArrayList<String>();
 				tags.add("E3");
 				tags.add("L");
 				termTest = new Term("Spring", 2025);
-				courseTest = new Course("FRE270", "Group Conversation", tags);
-				ClassInstance modifiedClassInstance1 = new ClassInstance(courseTest, termTest, instructorTest, "MWF 10:20AM - 12:40PM", roomTest, deptTest);
+				ClassInstance modifiedClassInstance1 = new ClassInstance("FRE270", "Group Conversation", tags, termTest, instructorTest, "MWF 10:20AM - 12:40PM", roomTest, deptTest);
 				
 				
 				deptHeadTest2 = new DepartmentHead("Michael Bradshaw", "anonDragoLord", "IamAw3some");
 				deptTest2 = new Department(deptHeadTest, "CSC");
 				instructorTest2 = new Instructor("Michael Bradshaw", deptTest);
-				roomTest2 = new Room("Olin", 212);
+				roomTest2 = new Room("Olin", "212");
 				tags2 = new ArrayList<String>();
 				tags2.add("E1");
 				tags2.add("G");
-				courseTest2 = new Course("CSC360", "Software Design", tags2);
-				ClassInstance modifiedClassInstance2 = new ClassInstance(courseTest2, termTest, instructorTest2, "MWF 10:20AM - 12:40PM", roomTest2, deptTest2);
+				ClassInstance modifiedClassInstance2 = new ClassInstance("CSC360", "Software Design", tags2, termTest, instructorTest2, "MWF 10:20AM - 12:40PM", roomTest2, deptTest2);
 				
 				ArrayList<ClassInstance> constrainedCourses = new ArrayList<ClassInstance>();
 				constrainedCourses.add(modifiedClassInstance1);
@@ -188,11 +184,12 @@ class ConstraintTest
 		for(int i = 0; i < constraintTest.getClasses().size(); i++) {
 			classStrings += constraintTest.getClasses().get(i);
 		}
-		assertEquals("ClassInstance [course=FRE270: Group Conversation, Tags: E3, L, term=Term [semester=Spring, year=2025], instructor=Instructor "
-				+ "[name=Allison Conelly, profDept=French, hours=0.0], classTime=MWF 10:20AM - 12:40PM, room=Crounse 307, dept=Alison Conelly: French, "
-				+ "classLength=7.0, hasFalseLimit=false]ClassInstance [course=CSC360: Software Design, Tags: E1, G, term=Term [semester=Spring, year=2025], "
-				+ "instructor=Instructor [name=Michael Bradshaw, profDept=French, hours=0.0], classTime=MWF 10:20AM - 12:40PM, room=Olin 212, dept=Alison Conelly: "
-				+ "CSC, classLength=7.0, hasFalseLimit=false]", classStrings);
+		assertEquals("ClassInstance [courseCode=FRE270: Group Conversation, Tags: E3, L, term=Term [semester=Spring,"
+				+ " year=2025], instructor=Instructor [name=Allison Conelly, profDept=French, hours=0.0], classTime="
+				+ "MWF 10:20AM - 12:40PM, room=Crounse 307, dept=Alison Conelly: French, classLength=7.0, hasFalseLimit=false]"
+				+ "ClassInstance [courseCode=CSC360: Software Design, Tags: E1, G, term=Term [semester=Spring, "
+				+ "year=2025], instructor=Instructor [name=Michael Bradshaw, profDept=French, hours=0.0], classTime="
+				+ "MWF 10:20AM - 12:40PM, room=Olin 212, dept=Alison Conelly: CSC, classLength=7.0, hasFalseLimit=false]", classStrings);
 	}
 	
 	@Test

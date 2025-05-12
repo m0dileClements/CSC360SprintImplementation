@@ -4,9 +4,15 @@
 
 //import java.util.ArrayList;
 
+import java.util.ArrayList;
+
 public class ClassInstance
 {
-	Course course;
+	//Course course;
+	String courseCode;
+	String title;
+	ArrayList<String> tags;
+	ArrayList<String> crossListings;
 	Term term;
 	Instructor instructor;
 	String classTime;
@@ -17,9 +23,11 @@ public class ClassInstance
 	double classLength;
 	Boolean hasFalseLimit;
 	
-	public ClassInstance(Course course, Term term, Instructor instructor, String classTime, Room room, Department dept) {
-		//super();
-		this.course = course;
+	public ClassInstance(String courseCode, String title, ArrayList<String> GETags, Term term, Instructor instructor, String classTime, Room room, Department dept) {
+		this.courseCode = courseCode;
+		this.title = title;
+		this.tags = GETags;	
+		this.crossListings = new ArrayList<String>();
 		this.term = term;
 		this.instructor = instructor;
 		this.classTime = classTime;
@@ -31,10 +39,10 @@ public class ClassInstance
 		
 	public ClassInstance() {}
 		//takes a string of a room name (i.e. "Olin 222") into corresponding parts needed for the Room class
-		public void setRoom(String roomName)
+		public void setRoom(String roomName, String roomNumber)
 		{
-			String[] roomInfo = roomName.split(" ");
-			Room newRoom = new Room(roomInfo[0], Integer.parseInt(roomInfo[1]));
+			//String[] roomInfo = roomName.split(" ");
+			Room newRoom = new Room(roomName, roomNumber);
 			this.room = newRoom;
 		}
 		
@@ -136,7 +144,7 @@ public class ClassInstance
 			//double profHours = instructor.getHours();
 			//instructor.setHours(profHours+ this.classLength);
 		}
-		//TODO
+		
 		
 		
 		//creates a deep copy of a class
@@ -144,7 +152,10 @@ public class ClassInstance
 			ClassInstance classCopy = new ClassInstance();
 			
 			if(u.getCanCreate()) {
-				classCopy.course = this.course;
+				classCopy.courseCode = this.courseCode;
+				classCopy.title = this.title;
+				classCopy.tags = this.tags;
+				classCopy.crossListings = this.crossListings;
 				classCopy.term = this.term;
 				classCopy.instructor = this.instructor;
 				classCopy.classTime = this.classTime;
@@ -161,7 +172,10 @@ public class ClassInstance
 	
 	public void modifyClassInstance(User u, ClassInstance updatedClass) {
 		if(u.getCanEdit()) {
-			course = updatedClass.getCourse();
+			courseCode = updatedClass.getCourseCode();
+			title = updatedClass.getTitle();
+			tags = updatedClass.getTags();
+			crossListings = updatedClass.getCrossListings();
 			term = updatedClass.getTerm();
 			instructor = updatedClass.getInstructor();
 			classTime = updatedClass.getClassTime();
@@ -177,21 +191,6 @@ public class ClassInstance
 	
 	//Getter and Setter methods for all relevant variables
 	
-	
-	//@return the course
-	 
-	public Course getCourse()
-	{
-		return course;
-	}
-	
-	
-	//	 @param course the course to set
-	 
-	public void setCourse(Course course)
-	{
-		this.course = course;
-	}
 	//@return the term
 	 
 	public Term getTerm()
@@ -298,11 +297,116 @@ public class ClassInstance
 	@Override
 	public String toString()
 	{
-		return "ClassInstance [course=" + course + ", term=" + term.toString() + ", instructor=" + instructor + ", classTime="
+		String tagString = "";
+		for (int i = 0; i < tags.size(); i++) {
+			tagString += tags.get(i);
+			if(i != tags.size()-1) {
+				tagString += ", ";
+			}
+		}
+		
+		return "ClassInstance [courseCode=" + courseCode + ": " + title + ", Tags: " + tagString + ", term=" + term.toString() + ", instructor=" + instructor + ", classTime="
 				+ classTime + ", room=" + room + ", dept=" + dept + ", classLength=" + classLength + ", hasFalseLimit="
 				+ hasFalseLimit + "]";
 	}
 	
+	
+	public void modifyCrossCourseCodes(ArrayList<String> crossListingsReplacement) {
+		crossListings.clear();
+		for (int i = 0; i < crossListingsReplacement.size(); i++) {
+			crossListings.add(crossListingsReplacement.get(i));
+		}
+		
+		
+	}
+	
+	//Getter and Setter methods for all relevant variables
+	
+	/**
+	 * @return the courseCode
+	 */
+	public String getCourseCode()
+	{
+		return courseCode;
+	}
+
+	/**
+	 * @param courseCode the courseCode to set
+	 */
+	public void setCourseCode(String courseCode)
+	{
+		this.courseCode = courseCode;
+	}
+
+	/**
+	 * @return the title
+	 */
+	public String getTitle()
+	{
+		return title;
+	}
+
+	/**
+	 * @param title the title to set
+	 */
+	public void setTitle(String title)
+	{
+		this.title = title;
+	}
+
+	/**
+	 * @return the tags
+	 */
+	public ArrayList<String> getTags()
+	{
+		return tags;
+	}
+
+	/**
+	 * @param tags the tags to set
+	 */
+	public void setTags(ArrayList<String> tags)
+	{
+		this.tags.clear();
+		this.tags = tags;
+	}
+	
+	public void addTags(String tag)
+	{
+		this.tags.add(tag);
+	}
+	
+	//removes specific tag from the tag lists
+	public void removeTags(String tag)
+	{
+		for(int i = 0; i< tags.size(); i++) {
+			if(tags.get(i) == tag) {
+				this.tags.remove(i);
+			}
+		}
+	}
+
+	/**
+	 * @return the crossListings
+	 */
+	public ArrayList<String> getCrossListings()
+	{
+		return crossListings;
+	}
+
+	/**
+	 * @param crossListings the crossListings to set
+	 */
+	public void setCrossListings(ArrayList<String> crossListings)
+	{
+		this.crossListings = crossListings;
+	}
+	
+	public void createCrossListing(ArrayList<String> listings) {
+		for(int i = 0; i < listings.size(); i++) {
+			crossListings.add(listings.get(i));
+		}
+	}
 	
 
 	

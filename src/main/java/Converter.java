@@ -6,4 +6,5 @@ public abstract class Converter
 	abstract void clearData(Main main);
 	
 	abstract void loadData(Main main);
+
 }

@@ -14,7 +14,7 @@ class RoomTest
 	@BeforeEach
 	void setUp() throws Exception
 	{
-		roomTest = new Room("Olin", 201);
+		roomTest = new Room("Olin",  "201");
 	}
 
 	@Test
@@ -39,14 +39,16 @@ class RoomTest
 	@Test
 	void testGetRoomNumber()
 	{
-		assertEquals(201, roomTest.getRoomNumber());
+		assertEquals("201", roomTest.getRoomNumber());
 	}
 
 	@Test
 	void testSetRoomNumber()
 	{
-		roomTest.setRoomNumber(212);
-		assertEquals(212, roomTest.getRoomNumber());
+		roomTest.setRoomNumber("212");
+		assertEquals("212", roomTest.getRoomNumber());
+		roomTest.setRoomNumber("211");
+		assertEquals("211", roomTest.getRoomNumber());
 	}
 
 }

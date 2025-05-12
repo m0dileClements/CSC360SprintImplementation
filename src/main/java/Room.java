@@ -3,9 +3,9 @@
 public class Room
 {
 	String building;
-	int roomNumber;
+	String roomNumber;
 	
-	public Room(String building, int roomNumber) {
+	public Room(String building, String roomNumber) {
 		this.building = building;
 		this.roomNumber = roomNumber;
 	}
@@ -17,7 +17,9 @@ public class Room
 	 */
 	public String getBuilding()
 	{
-		return building;
+		String[] buildingParts = building.split("-");
+		
+		return buildingParts[0];
 	}
 
 	/**
@@ -31,7 +33,8 @@ public class Room
 	/**
 	 * @return the roomNumber
 	 */
-	public int getRoomNumber()
+	
+	public String getRoomNumber()
 	{
 		return roomNumber;
 	}
@@ -39,7 +42,7 @@ public class Room
 	/**
 	 * @param roomNumber the roomNumber to set
 	 */
-	public void setRoomNumber(int roomNumber)
+	public void setRoomNumber(String roomNumber)
 	{
 		this.roomNumber = roomNumber;
 	}

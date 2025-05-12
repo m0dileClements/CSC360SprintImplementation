@@ -25,34 +25,34 @@ class NonOverlappingConstraintTest
 		DepartmentHead deptHeadTest = new DepartmentHead("Alison Conelly", "FrenchGal", "Oui0ui");
 		Department deptTest = new Department(deptHeadTest, "French");
 		Instructor instructorTest = new Instructor("Allison Conelly", deptTest);
-		Room roomTest = new Room("Crounse", 307);
+		Room roomTest = new Room("Crounse", "307");
 		ArrayList<String> tagArray = new ArrayList<String>();
 		
 		tagArray.add("E3");
 		tagArray.add("L");
 		testTerm = new Term("Spring", 2025);
-		Course courseTest = new Course("FRE270", "Group Conversation", tagArray);
-		class1 = new ClassInstance(courseTest, testTerm, instructorTest, "TR 9:40AM - 12:10PM", roomTest, deptTest);
+		//Course courseTest = new Course("FRE270", "Group Conversation", tagArray);
+		class1 = new ClassInstance("FRE270", "Group Conversation", tagArray, testTerm, instructorTest, "TR 9:40AM - 12:10PM", roomTest, deptTest);
 		
 		DepartmentHead deptHeadTest2 = new DepartmentHead("HeadWoman", "BossBabe", "IamAw3some");
 		Department deptTest2 = new Department(deptHeadTest2, "biology");
 		Instructor instructorTest2 = new Instructor("The Genie", deptTest2);
-		Room roomTest2 = new Room("Olin", 201);
+		Room roomTest2 = new Room("Olin", "201");
 		ArrayList<String> tags2 = new ArrayList<String>();
 		tags2.add("E2");
 		tags2.add("S");
-		Course courseTest2 = new Course("Bio210", "Environmental Science", tags2);
-		class2 = new ClassInstance(courseTest2, testTerm, instructorTest2, "MWF 10:20AM - 12:40PM", roomTest2, deptTest2);
+		//Course courseTest2 = new Course("Bio210", "Environmental Science", tags2);
+		class2 = new ClassInstance("Bio210", "Environmental Science", tags2, testTerm, instructorTest2, "MWF 10:20AM - 12:40PM", roomTest2, deptTest2);
 
 		DepartmentHead deptHeadTest3 = new DepartmentHead("HeadMan", "BigBos", "IHaveSevereImposterSyndrome");
 		Department deptTest3 = new Department(deptHeadTest3, "biology");
 		Instructor instructorTest3 = new Instructor("Dr. Doctor", deptTest3);
-		Room roomTest3 = new Room("Olin", 222);
+		Room roomTest3 = new Room("Olin", "222");
 		ArrayList<String> tags3 = new ArrayList<String>();
 		tags3.add("E1");
 		tags3.add("D");
-		Course courseTest3 = new Course("DSC", "Impacts of Analytics on Human body", tags3);
-		class3 = new ClassInstance(courseTest3, testTerm, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest3);
+		//Course courseTest3 = new Course("DSC", "Impacts of Analytics on Human body", tags3);
+		class3 = new ClassInstance("DSC", "Impacts of Analytics on Human body", tags3, testTerm, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest3);
 		
 		DepartmentHead deptHeadTest4 = new DepartmentHead("TA", "ImJustAGraduateStudent", "Im drowning in work");
 		Department deptTest4 = new Department(deptHeadTest4, "dlm");
@@ -60,8 +60,8 @@ class NonOverlappingConstraintTest
 		ArrayList<String> tags4 = new ArrayList<String>();
 		tags4.add("E1");
 		tags4.add("D");
-		Course courseTest4 = new Course("DLM110b", "How to cope with college", tags4);
-		class4 = new ClassInstance(courseTest4, testTerm, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest4);
+		//Course courseTest4 = new Course("DLM110b", "How to cope with college", tags4);
+		class4 = new ClassInstance("DLM110b", "How to cope with college", tags4, testTerm, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest4);
 	}
 
 	
