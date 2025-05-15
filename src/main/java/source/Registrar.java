@@ -1,6 +1,8 @@
-
-
 //class of a user that specifically operates as a registrar
+package source;
+
+
+
 public class Registrar extends User
 {
 	

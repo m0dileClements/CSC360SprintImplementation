@@ -1,8 +1,9 @@
-
-
 //import java.util.ArrayList;
 
 //import java.util.ArrayList;
+package source;
+
+
 
 import java.util.ArrayList;
 
@@ -141,8 +142,6 @@ public class ClassInstance
 				this.endTime = endingTime;
 			}
 			
-			//double profHours = instructor.getHours();
-			//instructor.setHours(profHours+ this.classLength);
 		}
 		
 		

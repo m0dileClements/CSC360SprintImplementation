@@ -1,6 +1,8 @@
-
-
 //a default user with preset permissions. Initialization of different types of users will change their permissions.
+package source;
+
+
+
 public class User
 {
 	String name;

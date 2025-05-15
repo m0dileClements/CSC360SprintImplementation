@@ -1,3 +1,4 @@
+package source;
 import java.util.ArrayList;
 
 import org.springframework.web.client.RestClient;
@@ -20,6 +21,8 @@ public class RestServerConverter extends Converter
 	public record DeptDetails(String request, Boolean successful, String message, DeptData data) {};
 	public record DeptData(String dept, ArrayList<FacultyInDept> faculty) {};
 	public record FacultyInDept(String name, String location) {};
+	public record NewDeptDetails(String request, Boolean successful, String message, NewDeptData data) {};
+	public record NewDeptData(String dept, String deptHead) {};
 
 	public record RoomList(String request, Boolean successful, String message, ArrayList<RoomInfo> data) {};
 	public record RoomInfo(String name, String description, String location) {};
@@ -34,6 +37,21 @@ public class RestServerConverter extends Converter
 	
 	public record FacultyList(String request, Boolean successful, String message, ArrayList<Faculty> data) {};
 	public record Faculty(String name, String description, String location) {};
+	
+	public record ConstraintsList(String request, Boolean successful, String message, ArrayList<ConstraintLocations> data) {};
+	public record ConstraintLocations(String name, String description, String location) {};
+	public record SpecConstraintWrapper(String request, Boolean successful, String message, SpecConstraint data) {};
+	public record SpecConstraint(String semester, int year, String desc, String class1, String class2) {};
+	
+	public record TermList(String request, Boolean successful, String message, ArrayList<TermLocations> data) {};
+	public record TermLocations(String name, String description, String location) {};
+	public record SpecificTermInfo(String request, Boolean successful, String message, TermData data) {};
+	public record TermData(String season, int year, Boolean isFinalized) {};
+
+	public record InstructorList(String request, Boolean successful, String message, ArrayList<InstructorLocations> data) {};
+	public record InstructorLocations(String name, String description, String location) {};
+	public record SpecInstructorWrapper(String request, Boolean successful, String message, InstructorData data) {};
+	public record InstructorData(String name, String dept) {};
 	
 	public void clearData(Main main) {
 		if(main.allUsers.size() != 0) {
@@ -314,162 +332,187 @@ public class RestServerConverter extends Converter
 	
 	public void createNewServerListHolders() {
 
-		Team response = defaultClient.post() 
+		defaultClient.post() 
 			.uri("http://localhost:9000/v1/new") 
 			.body(new Team("new", "holder for all new information", "http://localhost:9000/v1/new")) 
 			.retrieve()
 			.body(Team.class);
 		
-		CourseLocations classTeam = defaultClient.post() 
+		defaultClient.post() 
+			.uri("http://localhost:9000/v1/new/terms") 
+			.body(new Team("terms", "holder for classes", "http://localhost:9000/v1/new/terms")) 
+			.retrieve()
+			.body(TermLocations.class);
+
+		defaultClient.post() 
 				.uri("http://localhost:9000/v1/new/classes") 
 				.body(new Team("classes", "holder for classes", "http://localhost:9000/v1/new/classes")) 
 				.retrieve()
 				.body(CourseLocations.class);
-		
-		
-		RoomInfo roomTeam = defaultClient.post() 
+
+		defaultClient.post() 
 				.uri("http://localhost:9000/v1/new/rooms") 
 				.body(new Team("rooms", "holder for rooms", "http://localhost:9000/v1/new/rooms")) 
 				.retrieve()
 				.body(RoomInfo.class);
 		
-		
-		Dept deptsTeam = defaultClient.post() 
+		defaultClient.post() 
 				.uri("http://localhost:9000/v1/new/depts") 
 				.body(new Team("depts", "holder for depts", "http://localhost:9000/v1/new/depts")) 
 				.retrieve()
 				.body(Dept.class);
-		
-		
-		Faculty facultyTeam = defaultClient.post() 
+				
+		defaultClient.post() 
 				.uri("http://localhost:9000/v1/new/faculty") 
-				.body(new Team("depts", "holder for depts", "http://localhost:9000/v1/new/faculty")) 
+				.body(new Team("depts", "holder for faculty", "http://localhost:9000/v1/new/faculty")) 
 				.retrieve()
 				.body(Faculty.class);
 		
+		defaultClient.post() 
+				.uri("http://localhost:9000/v1/new/mustOverlap") 
+				.body(new Team("mustOverlaps", "holder for mustOverlap Constraints", "http://localhost:9000/v1/new/mustOverlap")) 
+				.retrieve()
+				.body(String.class);
+		
+		defaultClient.post() 
+				.uri("http://localhost:9000/v1/new/mustNotOverlap") 
+				.body(new Team("mustOverlaps", "holder for mustOverlap Constraints", "http://localhost:9000/v1/new/mustNotOverlap")) 
+				.retrieve()
+				.body(String.class);
+		
+		
+		defaultClient.post() 
+				.uri("http://localhost:9000/v1/new/mustBeOffered") 
+				.body(new Team("mustOverlaps", "holder for mustOverlap Constraints", "http://localhost:9000/v1/new/mustBeOffered")) 
+				.retrieve()
+				.body(String.class);
+		
+		
 	}
 	
-//	public void uploadData(Object object) {
-//		
-//		if(object.getClass().equals(ClassInstance.class)) {
-//			ClassInstance newObject = (ClassInstance) object;
-//			uploadClass(newObject);
-//		}
-//		
-//		if(object.getClass().equals(Term.class)) {
-//			Term newObject = (Term) object;
-//			uploadTerm(newObject);
-//		}
-//		
-//		if(object.getClass().equals(Room.class)) {
-//			Room newObject = (Room) object;
-//			uploadRoom(newObject);		
-//		}
-//		
-//		if(object.getClass().equals(Department.class)) {
-//			Department newObject = (Department) object;
-//			uploadDept(newObject);
-//		}
-//
-//		if(object.getClass().equals(Instructor.class)) {
-//			Instructor newObject = (Instructor) object;
-//			uploadInstructor(newObject);
-//		}
-//		
-//		if(object.getClass().equals(Constraint.class)) {
-//			if(object.getClass().equals(MustBeOfferedConstraint.class)) {
-//				MustBeOfferedConstraint newObject = (MustBeOfferedConstraint) object;
-//				uploadMustBeOfferedConstraint(newObject);
-//			}
-//			if(object.getClass().equals(MustOverlapConstraint.class)) {
-//				MustOverlapConstraint newObject = (MustOverlapConstraint) object;
-//				uploadMustOverlapConstraint(newObject);
-//			}
-//			if(object.getClass().equals(NonOverlappingConstraint.class)) {
-//				NonOverlappingConstraint newObject = (NonOverlappingConstraint) object;
-//				uploadNonOverlappingConstraint(newObject);
-//			}	
-//		}
-//	}
-//	
-//	
-//	public void uploadClass(ClassInstance classInstance) {
-//		String specificCourse = defaultClient.post() 
-//				.uri("http://localhost:9000/v1/new/classes/h") 
-//				.body(new CourseData("Spring", 2025, "biology", "a", "b", "c", "d", "e", "f", "g", "h")) 
-//				.retrieve()
-//				.body(String.class);
-//		System.out.println(specificCourse);
-//		
-//	}
-//	
-//	public void uploadTerm(Term term) {
-//		String specificCourse = defaultClient.post() 
-//				.uri("http://localhost:9000/v1/new/terms/h") 
-//				.body(new CourseData("Spring", 2025, "biology", "a", "b", "c", "d", "e", "f", "g", "h")) 
-//				.retrieve()
-//				.body(String.class);
-//		System.out.println(specificCourse);
-//		
-//	}
-//	
-//	public void uploadRoom(Room room) {
-//		String specificCourse = defaultClient.post() 
-//				.uri("http://localhost:9000/v1/new/rooms/h") 
-//				.body(new CourseData("Spring", 2025, "biology", "a", "b", "c", "d", "e", "f", "g", "h")) 
-//				.retrieve()
-//				.body(String.class);
-//		System.out.println(specificCourse);
-//		
-//	}
-//	
-//	public void uploadDept(Department dept) {
-//		String specificCourse = defaultClient.post() 
-//				.uri("http://localhost:9000/v1/new/depts/h") 
-//				.body(new CourseData("Spring", 2025, "biology", "a", "b", "c", "d", "e", "f", "g", "h")) 
-//				.retrieve()
-//				.body(String.class);
-//		System.out.println(specificCourse);
-//		
-//	}
-//	
-//	public void uploadInstructor(Instructor instructor) {
-//		String specificCourse = defaultClient.post() 
-//				.uri("http://localhost:9000/v1/new/instructors/h") 
-//				.body(new CourseData("Spring", 2025, "biology", "a", "b", "c", "d", "e", "f", "g", "h")) 
-//				.retrieve()
-//				.body(String.class);
-//		System.out.println(specificCourse);
-//		
-//	}
-//	
-//	public void uploadMustBeOfferedConstraint(MustBeOfferedConstraint constraint) {
-//		String specificCourse = defaultClient.post() 
-//				.uri("http://localhost:9000/v1/new/constraints/mustBeOffered/h") 
-//				.body(new CourseData("Spring", 2025, "biology", "a", "b", "c", "d", "e", "f", "g", "h")) 
-//				.retrieve()
-//				.body(String.class);
-//		System.out.println(specificCourse);
-//		
-//	}
-//	
-//	public void uploadMustOverlapConstraint(MustOverlapConstraint constraint) {
-//		String specificCourse = defaultClient.post() 
-//				.uri("http://localhost:9000/v1/new/constraints/mustOverlap/h") 
-//				.body(new CourseData("Spring", 2025, "biology", "a", "b", "c", "d", "e", "f", "g", "h")) 
-//				.retrieve()
-//				.body(String.class);
-//		System.out.println(specificCourse);
-//		
-//	}
-//	
-//	public void uploadNonOverlappingConstraint(NonOverlappingConstraint constraint) {
-//		String specificCourse = defaultClient.post() 
-//				.uri("http://localhost:9000/v1/new/constraints/nonOverlapping/h") 
-//				.body(new CourseData("Spring", 2025, "biology", "a", "b", "c", "d", "e", "f", "g", "h")) 
-//				.retrieve()
-//				.body(String.class);
-//		System.out.println(specificCourse);
-//		
-//	}
+	public void uploadData(Object object) {
+		
+		if(object.getClass().equals(ClassInstance.class)) {
+			ClassInstance newObject = (ClassInstance) object;
+			uploadClass(newObject);
+		}
+		
+		if(object.getClass().equals(Term.class)) {
+			Term newObject = (Term) object;
+			uploadTerm(newObject);
+		}
+		
+		if(object.getClass().equals(Room.class)) {
+			Room newObject = (Room) object;
+			uploadRoom(newObject);		
+		}
+		
+		if(object.getClass().equals(Department.class)) {
+			Department newObject = (Department) object;
+			uploadDept(newObject);
+		}
+
+		if(object.getClass().equals(Instructor.class)) {
+			Instructor newObject = (Instructor) object;
+			uploadInstructor(newObject);
+		}
+		if(object.getClass().equals(MustBeOfferedConstraint.class)) {
+			MustBeOfferedConstraint newObject = (MustBeOfferedConstraint) object;
+			uploadMustBeOfferedConstraint(newObject);
+		}
+		if(object.getClass().equals(MustOverlapConstraint.class)) {
+			MustOverlapConstraint newObject = (MustOverlapConstraint) object;
+			uploadMustOverlapConstraint(newObject);
+		}
+		if(object.getClass().equals(NonOverlappingConstraint.class)) {
+			NonOverlappingConstraint newObject = (NonOverlappingConstraint) object;
+			uploadNonOverlappingConstraint(newObject);
+		}	
+		
+	}
+	
+	
+	public void uploadClass(ClassInstance classInstance) {
+		String section;
+		if(classInstance.getCourseCode().length() == 7) {
+			section = classInstance.getCourseCode().substring(6);
+		} else {
+			section = "";
+		}
+		defaultClient.post() 
+				.uri("http://localhost:9000/v1/new/classes/" + classInstance.getCourseCode() + section + "-" + classInstance.getTerm().getSemester().substring(0, 2) +classInstance.getTerm().getYear()) 
+				.body(new CourseData(classInstance.getTerm().getSemester(), classInstance.getTerm().getYear(), classInstance.getDept().getDeptName(), classInstance.getCourseCode().substring(3, 6) , section, classInstance.getTitle(), classInstance.getInstructor().getName(), classInstance.getClassTime(), classInstance.getRoom().getBuilding(), classInstance.getRoom().getRoomNumber(), (classInstance.getTerm().getSemester() + "-" +classInstance.getTerm().getYear()))) 
+				.retrieve()
+				.body(String.class);		
+	}
+	
+	public void uploadTerm(Term term) {
+		defaultClient.post() 
+				.uri("http://localhost:9000/v1/new/terms/" + term.getSemester() + "-" + term.getYear()) 
+				.body(new TermData(term.getSemester(), term.getYear(), term.getIsFinalized())) 
+				.retrieve()
+				.body(String.class);
+		
+	}
+	
+	public void uploadRoom(Room room) {
+		defaultClient.post() 
+				.uri("http://localhost:9000/v1/new/rooms/" + (room.getBuilding() + "-" + room.getRoomNumber())) 
+				.body(new SpecRoomInfo(room.getBuilding(), room.getRoomNumber(),room.getBuilding() + "-" + room.getRoomNumber() )) 
+				.retrieve()
+				.body(String.class);
+	}
+	
+	public void uploadDept(Department dept) {
+		defaultClient.post() 
+				.uri("http://localhost:9000/v1/new/depts/" + dept.getDeptName()) 
+				.body(new NewDeptData(dept.getDeptName(), dept.getDepartmentHead().getName())) 
+				.retrieve()
+				.body(String.class);
+	}
+	
+	public void uploadInstructor(Instructor instructor) {
+		defaultClient.post() 
+				.uri("http://localhost:9000/v1/new/faculty/" + instructor.getName()) 
+				.body(new InstructorData(instructor.getName(), instructor.getProfDept().getDeptName())) 
+				.retrieve()
+				.body(String.class);		
+	}
+	
+	public void uploadMustBeOfferedConstraint(MustBeOfferedConstraint constraint) {
+		String classLocation1 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(0).getCourseCode() + "-" + constraint.getClasses().get(0).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(0).getTerm().getYear();
+		
+		defaultClient.post() 
+				.uri("http://localhost:9000/v1/new/mustBeOffered/" + constraint.getConstraintName() + "-" + constraint.getTerm().getSemester() + "-" + constraint.getTerm().getYear()) 
+				.body(new SpecConstraint(constraint.getTerm().getSemester(), constraint.getTerm().getYear(), constraint.getConstraintName(), classLocation1, "")) 
+				.retrieve()
+				.body(String.class);	
+	}
+	
+	public void uploadMustOverlapConstraint(MustOverlapConstraint constraint) {
+		String classLocation1 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(0).getCourseCode() + "-" + constraint.getClasses().get(0).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(0).getTerm().getYear();
+		String classLocation2 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(1).getCourseCode() + "-" + constraint.getClasses().get(1).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(1).getTerm().getYear();
+
+		String specificCourse = defaultClient.post() 
+				.uri("http://localhost:9000/v1/new/mustOverlap/" + constraint.getConstraintName() + "-" + constraint.getTerm().getSemester() + "-" + constraint.getTerm().getYear()) 
+				.body(new SpecConstraint(constraint.getTerm().getSemester(), constraint.getTerm().getYear(), constraint.getConstraintName(), classLocation1, classLocation2)) 
+				.retrieve()
+				.body(String.class);
+		System.out.println(specificCourse);
+		
+	}
+	
+	public void uploadNonOverlappingConstraint(NonOverlappingConstraint constraint) {
+		String classLocation1 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(0).getCourseCode() + "-" + constraint.getClasses().get(0).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(0).getTerm().getYear();
+		String classLocation2 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(1).getCourseCode() + "-" + constraint.getClasses().get(1).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(1).getTerm().getYear();
+
+		String specificCourse = defaultClient.post() 
+				.uri("http://localhost:9000/v1/new/mustNotOverlap/" + constraint.getConstraintName() + "-" + constraint.getTerm().getSemester() + "-" + constraint.getTerm().getYear()) 
+				.body(new SpecConstraint(constraint.getTerm().getSemester(), constraint.getTerm().getYear(), constraint.getConstraintName(), classLocation1, classLocation2)) 
+				.retrieve()
+				.body(String.class);
+		System.out.println(specificCourse);
+		
+	}
+	
 }

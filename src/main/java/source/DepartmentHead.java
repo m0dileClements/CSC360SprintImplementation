@@ -1,6 +1,8 @@
-
-
 //class of a user that specifically operates as a department head
+package source;
+
+
+
 public class DepartmentHead extends User
 {
 	Department department; 
