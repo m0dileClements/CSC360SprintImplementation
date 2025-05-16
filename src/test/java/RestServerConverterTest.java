@@ -505,6 +505,7 @@ class RestServerConverterTest
 		assertEquals(2, testConverter.getNewItemsInRest().size());
 	}
 	
+	//test uploading users and login function
 	@Test
 	void testUploadUser() {
 		testConverter.createNewServerListHolders();
@@ -573,6 +574,25 @@ class RestServerConverterTest
 		assertEquals("Student", userData.role());
 	
 		assertEquals(4, testConverter.getNewItemsInRest().size());
+		
+		
+		//test login function
+		
+		main.getAllUsers().add(studentTest);
+		main.getAllUsers().add(registrarTest);
+		main.getAllUsers().add(deptHeadTest);
+		main.getAllUsers().add(userTest);
+		Boolean validLogin = testConverter.canLogin(main, "janeDo3", "password");
+		assertEquals(true, validLogin);
+		
+		validLogin = testConverter.canLogin(main, "wont work", "password");
+		assertEquals(false, validLogin);
+		
+		validLogin = testConverter.canLogin(main, "janeDo3", "wont work");
+		assertEquals(false, validLogin);
+		
+		validLogin = testConverter.canLogin(main, "wont work", "wont work");
+		assertEquals(false, validLogin);
 	}
 	
 	@Test
@@ -914,12 +934,12 @@ class RestServerConverterTest
 		
 		ArrayList<UserLocations> userAddress = userLocationWrapper.data();
 		
-		SpecUserWrapper specificUserWrapper = defaultClient.get()
-				.uri(userAddress.get(1).location())
-				.retrieve()
-				.body(SpecUserWrapper.class);
+//		SpecUserWrapper specificUserWrapper = defaultClient.get()
+//				.uri(userAddress.get(1).location())
+//				.retrieve()
+//				.body(SpecUserWrapper.class);
 			
-		UserData userData = specificUserWrapper.data();
+		//UserData userData = specificUserWrapper.data();
 		
 		assertEquals(4, userAddress.size());
 		

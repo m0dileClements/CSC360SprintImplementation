@@ -3,18 +3,18 @@ import java.util.ArrayList;
 
 import org.springframework.web.client.RestClient;
 
-import source.RestServerConverter.ConstraintLocations;
-import source.RestServerConverter.ConstraintsList;
-import source.RestServerConverter.CourseList;
-import source.RestServerConverter.CourseLocations;
-import source.RestServerConverter.Dept;
-import source.RestServerConverter.DeptList;
-import source.RestServerConverter.InstructorList;
-import source.RestServerConverter.InstructorLocations;
-import source.RestServerConverter.RoomInfo;
-import source.RestServerConverter.RoomList;
-import source.RestServerConverter.UserList;
-import source.RestServerConverter.UserLocations;
+//import source.RestServerConverter.ConstraintLocations;
+//import source.RestServerConverter.ConstraintsList;
+//import source.RestServerConverter.CourseList;
+//import source.RestServerConverter.CourseLocations;
+//import source.RestServerConverter.Dept;
+//import source.RestServerConverter.DeptList;
+//import source.RestServerConverter.InstructorList;
+//import source.RestServerConverter.InstructorLocations;
+//import source.RestServerConverter.RoomInfo;
+//import source.RestServerConverter.RoomList;
+//import source.RestServerConverter.UserList;
+//import source.RestServerConverter.UserLocations;
 //put delete team in before all of tests 
 public class RestServerConverter extends Converter
 {
@@ -636,12 +636,12 @@ public void deleteData(Object object) {
 	
 //takes in class instance and deletes it from the classes rest server team	
 	public void deleteClass(ClassInstance classInstance) {
-		String section;
-		if(classInstance.getCourseCode().length() == 7) {
-			section = classInstance.getCourseCode().substring(6);
-		} else {
-			section = "";
-		}
+//		String section;
+//		if(classInstance.getCourseCode().length() == 7) {
+//			section = classInstance.getCourseCode().substring(6);
+//		} else {
+//			section = "";
+//		}
 		CourseList courseLocationWrapper  = defaultClient.get()
 				.uri("http://localhost:9000/v1/new/classes")
 				.retrieve()
@@ -873,4 +873,15 @@ public void deleteData(Object object) {
 			uploadUser(newObject);
 		}
 	}	
+	
+	public Boolean canLogin(Main main, String username, String password) {
+		Boolean hasLogin = false;
+		for(int i = 0; i < main.getAllUsers().size(); i++) {
+			if(main.getAllUsers().get(i).getUsername().equals(username) && main.getAllUsers().get(i).getPassword().equals(password)) {
+				hasLogin = true;
+			}
+			
+		}
+		return hasLogin;
+	}
 }
