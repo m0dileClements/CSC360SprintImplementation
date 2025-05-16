@@ -25,11 +25,14 @@ public class RestServerConverter extends Converter
 	
 	Boolean isLaunched = false;
 	RestClient defaultClient = RestClient.create();
+	
+	//ArrayList that stores all the new objects added to the rest server
 	ArrayList<Object> newItemsInRest = new ArrayList<Object>();
 	
+	//public records for each object/team
 	public record ArchiveWrapper(String request, Boolean successful, String message, ArrayList<Team> data) {};
 	public record Team(String name, String description, String location) {};
-	
+	//department server structure
 	public record DeptList(String request, Boolean successful, String message, ArrayList<Dept> data) {};
 	public record Dept(String name, String description, String location) {};
 	public record DeptDetails(String request, Boolean successful, String message, DeptData data) {};
@@ -37,36 +40,35 @@ public class RestServerConverter extends Converter
 	public record FacultyInDept(String name, String location) {};
 	public record NewDeptDetails(String request, Boolean successful, String message, NewDeptData data) {};
 	public record NewDeptData(String dept, String deptHead) {};
-
+	//room server structure
 	public record RoomList(String request, Boolean successful, String message, ArrayList<RoomInfo> data) {};
 	public record RoomInfo(String name, String description, String location) {};
 	public record SpecRoomWrapper(String request, Boolean successful, String message, SpecRoomInfo data) {};
 	public record SpecRoomInfo(String building, String roomNumber, String id) {};
-	
-	
+	//class server structure
 	public record CourseList(String request, Boolean successful, String message, ArrayList<CourseLocations> data) {};
 	public record CourseLocations(String name, String description, String location) {};
 	public record SpecificCourseInfo(String request, Boolean successful, String message, CourseData data) {};
 	public record CourseData(String season, int year, String dept, String num, String section, String name, String instructor, String meetingTime, String building, String roomNumber, String id) {};
-	
+	//import faculty from rest server structure
 	public record FacultyList(String request, Boolean successful, String message, ArrayList<Faculty> data) {};
 	public record Faculty(String name, String description, String location) {};
-	
+	//constraints server structure
 	public record ConstraintsList(String request, Boolean successful, String message, ArrayList<ConstraintLocations> data) {};
 	public record ConstraintLocations(String name, String description, String location) {};
 	public record SpecConstraintWrapper(String request, Boolean successful, String message, SpecConstraint data) {};
 	public record SpecConstraint(String semester, int year, String desc, String class1, String class2) {};
-	
+	//term server structure
 	public record TermList(String request, Boolean successful, String message, ArrayList<TermLocations> data) {};
 	public record TermLocations(String name, String description, String location) {};
 	public record SpecificTermInfo(String request, Boolean successful, String message, TermData data) {};
 	public record TermData(String season, int year, Boolean isFinalized) {};
-
+	//instructor server structure
 	public record InstructorList(String request, Boolean successful, String message, ArrayList<InstructorLocations> data) {};
 	public record InstructorLocations(String name, String description, String location) {};
 	public record SpecInstructorWrapper(String request, Boolean successful, String message, InstructorData data) {};
 	public record InstructorData(String name, String dept) {};
-	
+	//user server structure
 	public record UserList(String request, Boolean successful, String message, ArrayList<UserLocations> data) {};
 	public record UserLocations(String name, String description, String location) {};
 	public record SpecUserWrapper(String request, Boolean successful, String message, UserData data) {};
@@ -82,7 +84,7 @@ public class RestServerConverter extends Converter
 		return newItemsInRest;
 	}
 
-
+	//clears all data from main, and wipes any changes from the rest server
 	public void clearData(Main main) {
 		if(main.allUsers.size() != 0) {
 			main.allUsers.clear();
@@ -118,6 +120,7 @@ public class RestServerConverter extends Converter
 		
 	}
 	
+	//imports all data stored in the rest server and store in main 
 	public void loadData(Main main) {
 		if (this.isLaunched) {
 			return;
@@ -189,6 +192,7 @@ public class RestServerConverter extends Converter
 		}
 	}
 	
+	//reformats inputed class times from the rest server into the proper format i planned for in sprint 1
 	public String reformattedClassTime(String classMeetingTime) {
 		String formattedTimeString = "";
 		if (classMeetingTime != null) {
@@ -220,8 +224,6 @@ public class RestServerConverter extends Converter
 			} else {
 				endTimeHalf = "PM";
 			}
-			
-			
 			String formattedStartMins = "";
 			if(startMins == 0) {
 				formattedStartMins = "00";
@@ -241,6 +243,7 @@ public class RestServerConverter extends Converter
 		return formattedTimeString;
 	}
 	
+	//imports the depts from rest server archive 
 	public void importDept(Main main, DeptDetails specificDeptWrapper) {
 		ArrayList<FacultyInDept> facultyList = specificDeptWrapper.data().faculty();
 		
@@ -257,6 +260,7 @@ public class RestServerConverter extends Converter
 		
 	}
 	
+	//imports the rooms from rest server archive 
 	public void importRoom(Main main, SpecRoomWrapper specRoomWrapper) {
 		SpecRoomInfo roomData = specRoomWrapper.data();
 		
@@ -265,6 +269,7 @@ public class RestServerConverter extends Converter
 		
 	}
 	
+	//imports the courses from rest server archive 
 	public void importCourse(Main main, User permissionsToLoad, CourseData courseInfo) {
 		String courseCode = courseInfo.num() + courseInfo.section();
 		String courseTitle = courseInfo.name();
@@ -359,7 +364,7 @@ public class RestServerConverter extends Converter
 	}
 	
 	
-	
+	//creates the new team, and all of the different objects needed to be uploaded
 	public void createNewServerListHolders() {
 
 		defaultClient.post() 
@@ -424,6 +429,7 @@ public class RestServerConverter extends Converter
 		
 	}
 	
+	//takes in an object and calls the corresponding upload function for each specific object
 	public void uploadData(Object object) {
 		
 		if(object.getClass().equals(ClassInstance.class)) {
@@ -479,6 +485,7 @@ public class RestServerConverter extends Converter
 		
 	}
 	
+//takes in an object and calls the corresponding delete function for each specific object
 public void deleteData(Object object) {
 		
 		if(object.getClass().equals(ClassInstance.class)) {
@@ -534,6 +541,7 @@ public void deleteData(Object object) {
 		
 	}
 	
+//takes in class instance and posts it to the classes rest server team
 	public void uploadClass(ClassInstance classInstance) {
 		String section;
 		if(classInstance.getCourseCode().length() == 7) {
@@ -548,6 +556,7 @@ public void deleteData(Object object) {
 				.body(String.class);		
 	}
 	
+//takes in a term and posts it to the terms rest server team
 	public void uploadTerm(Term term) {
 		defaultClient.post() 
 				.uri("http://localhost:9000/v1/new/terms/" + term.getSemester() + "-" + term.getYear()) 
@@ -556,7 +565,7 @@ public void deleteData(Object object) {
 				.body(String.class);
 		
 	}
-	
+//takes in a room and posts it to the rooms rest server team
 	public void uploadRoom(Room room) {
 		defaultClient.post() 
 				.uri("http://localhost:9000/v1/new/rooms/" + (room.getBuilding() + "-" + room.getRoomNumber())) 
@@ -564,7 +573,7 @@ public void deleteData(Object object) {
 				.retrieve()
 				.body(String.class);
 	}
-	
+//takes in a dept and posts it to the dept rest server team
 	public void uploadDept(Department dept) {
 		defaultClient.post() 
 				.uri("http://localhost:9000/v1/new/depts/" + dept.getDeptName()) 
@@ -572,7 +581,7 @@ public void deleteData(Object object) {
 				.retrieve()
 				.body(String.class);
 	}
-	
+//takes in an instructor and posts it to the instructor rest server team
 	public void uploadInstructor(Instructor instructor) {
 		defaultClient.post() 
 				.uri("http://localhost:9000/v1/new/faculty/" + instructor.getName()) 
@@ -580,7 +589,7 @@ public void deleteData(Object object) {
 				.retrieve()
 				.body(String.class);		
 	}
-	
+//takes in a MustBeOfferedConstraint and posts it to the MustBeOfferedConstraint rest server team
 	public void uploadMustBeOfferedConstraint(MustBeOfferedConstraint constraint) {
 		String classLocation1 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(0).getCourseCode() + "-" + constraint.getClasses().get(0).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(0).getTerm().getYear();
 		
@@ -590,7 +599,7 @@ public void deleteData(Object object) {
 				.retrieve()
 				.body(String.class);	
 	}
-	
+//takes in a MustOverlapConstraint and posts it to the MustOverlapConstraint rest server team	
 	public void uploadMustOverlapConstraint(MustOverlapConstraint constraint) {
 		String classLocation1 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(0).getCourseCode() + "-" + constraint.getClasses().get(0).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(0).getTerm().getYear();
 		String classLocation2 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(1).getCourseCode() + "-" + constraint.getClasses().get(1).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(1).getTerm().getYear();
@@ -603,7 +612,7 @@ public void deleteData(Object object) {
 		
 		
 	}
-	
+//takes in a NonOverlappingConstraint and posts it to the NonOverlappingConstraint rest server team
 	public void uploadNonOverlappingConstraint(NonOverlappingConstraint constraint) {
 		String classLocation1 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(0).getCourseCode() + "-" + constraint.getClasses().get(0).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(0).getTerm().getYear();
 		String classLocation2 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(1).getCourseCode() + "-" + constraint.getClasses().get(1).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(1).getTerm().getYear();
@@ -616,7 +625,7 @@ public void deleteData(Object object) {
 		
 		
 	}
-	
+//takes in a User and posts it to the users rest server team
 	public void uploadUser(User user) {
 		defaultClient.post() 
 				.uri("http://localhost:9000/v1/new/users/" + user.getUsername()) 
@@ -625,7 +634,7 @@ public void deleteData(Object object) {
 				.body(String.class);		
 	}
 	
-	
+//takes in class instance and deletes it from the classes rest server team	
 	public void deleteClass(ClassInstance classInstance) {
 		String section;
 		if(classInstance.getCourseCode().length() == 7) {
@@ -651,7 +660,7 @@ public void deleteData(Object object) {
 			
 		}	
 	}
-	
+//takes in term and deletes it from the terms rest server team
 	public void deleteTerm(Term term) {
 		CourseList termLocationWrapper  = defaultClient.get()
 				.uri("http://localhost:9000/v1/new/terms")
@@ -672,7 +681,7 @@ public void deleteData(Object object) {
 			
 		}	
 	}
-	
+//takes in room and deletes it from the rooms rest server team
 	public void deleteRoom(Room room) {
 		RoomList roomLocationWrapper  = defaultClient.get()
 				.uri("http://localhost:9000/v1/new/rooms")
@@ -691,7 +700,7 @@ public void deleteData(Object object) {
 			}
 		}	
 	}
-	
+//takes in dept and deletes it from the depts rest server team
 	public void deleteDept(Department dept) {
 		DeptList deptLocationWrapper  = defaultClient.get()
 				.uri("http://localhost:9000/v1/new/depts")
@@ -710,7 +719,7 @@ public void deleteData(Object object) {
 			}
 		}	
 	}
-	
+//takes in an instructor and deletes it from the instructors rest server team
 	public void deleteInstructor(Instructor instructor) {
 		InstructorList instructorLocationWrapper  = defaultClient.get()
 				.uri("http://localhost:9000/v1/new/faculty")
@@ -728,7 +737,7 @@ public void deleteData(Object object) {
 			}
 		}	
 	}
-	
+//takes in MustBeOfferedConstraint and deletes it from the MustBeOfferedConstraints rest server team
 	public void deleteMustBeOfferedConstraint(MustBeOfferedConstraint constraint) {
 		ConstraintsList constraintsLocationWrapper  = defaultClient.get()
 				.uri("http://localhost:9000/v1/new/mustBeOffered")
@@ -747,7 +756,7 @@ public void deleteData(Object object) {
 			}
 		}	
 	}
-	
+//takes in MustOverlapConstraint and deletes it from the MustOverlapConstraint rest server team
 	public void deleteMustOverlapConstraint(MustOverlapConstraint constraint) {
 		ConstraintsList constraintsLocationWrapper  = defaultClient.get()
 				.uri("http://localhost:9000/v1/new/mustOverlap")
@@ -765,7 +774,7 @@ public void deleteData(Object object) {
 			}
 		}	
 	}
-	
+//takes in NonOverlappingConstraint and deletes it from the NonOverlappingConstraint rest server team
 	public void deleteNonOverlappingConstraint(NonOverlappingConstraint constraint) {
 		ConstraintsList constraintsLocationWrapper  = defaultClient.get()
 				.uri("http://localhost:9000/v1/new/mustNotOverlap")
@@ -783,7 +792,7 @@ public void deleteData(Object object) {
 			}
 		}	
 	}
-	
+//takes in user and deletes it from the users rest server team
 	public void deleteUser(User user) {
 		UserList userLocationWrapper  = defaultClient.get()
 				.uri("http://localhost:9000/v1/new/users")
@@ -813,10 +822,8 @@ public void deleteData(Object object) {
 		
 		
 		for(int i = 0; i < newItemsInRest.size(); i++) {
-			uploadUpdate(newItemsInRest.get(i));
-			
+			uploadUpdate(newItemsInRest.get(i));	
 		}
-		
 	}
 	
 	//works identically to the uploadData function, but does not upload the object to the 
@@ -865,8 +872,5 @@ public void deleteData(Object object) {
 			User newObject = (User) object;
 			uploadUser(newObject);
 		}
-		
-		
-	}
-	
+	}	
 }
