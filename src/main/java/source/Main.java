@@ -213,7 +213,13 @@ public class Main
 		return allClasses;
 	}
 	
-	public void addClassInstance(ClassInstance classInstance) {
+	public void addClassInstance(User u, ClassInstance classInstance) {
+		if(u.getRole().equals("DeptHead")) {
+			DepartmentHead deptHead = (DepartmentHead)u;
+			if(!deptHead.getDepartment().getDeptName().equals(classInstance.getDept().getDeptName())) {
+				return;
+			}
+		}
 		Boolean alreadyExists = false;
 		for(int i = 0; i < allClasses.size(); i++) {
 			if(classInstance.toString().equals(allClasses.get(i).toString())) {

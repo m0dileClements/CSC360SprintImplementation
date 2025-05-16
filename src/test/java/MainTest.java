@@ -54,7 +54,7 @@ class MainTest
 		main.addTerm(currentUser, testTerm);
 		class1 = new ClassInstance("FRE270", "Group Conversation", tagArray, testTerm, instructorTest, "TR 9:40AM - 12:10PM", roomTest, deptTest);
 		testTerm.addClass(currentUser, class1);
-		main.addClassInstance(class1);
+		main.addClassInstance(currentUser, class1);
 		
 		
 		DepartmentHead deptHeadTest2 = new DepartmentHead("HeadWoman", "BossBabe", "IamAw3some");
@@ -69,7 +69,7 @@ class MainTest
 		tags2.add("S");
 		class2 = new ClassInstance("Bio210", "Environmental Science", tags2, testTerm, instructorTest2, "MWF 10:20AM - 12:40PM", roomTest2, deptTest2);
 		testTerm.addClass(currentUser, class2);
-		main.addClassInstance(class2);
+		main.addClassInstance(currentUser, class2);
 		
 		DepartmentHead deptHeadTest3 = new DepartmentHead("HeadMan", "BigBos", "IHaveSevereImposterSyndrome");
 		Department deptTest3 = new Department(deptHeadTest3, "biology");
@@ -85,7 +85,7 @@ class MainTest
 		main.addTerm(currentUser, testTerm2);
 		class3 = new ClassInstance("DSC", "Impacts of Analytics on Human body", tags3, testTerm2, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest3);
 		testTerm2.addClass(currentUser, class3);
-		main.addClassInstance(class3);
+		main.addClassInstance(currentUser, class3);
 		
 		DepartmentHead deptHeadTest4 = new DepartmentHead("TA", "ImJustAGraduateStudent", "Im drowning in work");
 		Department deptTest4 = new Department(deptHeadTest4, "dlm");
@@ -97,7 +97,7 @@ class MainTest
 		main.addTerm(currentUser, testTerm3);
 		class4 = new ClassInstance("DLM110b", "How to cope with college", tags4, testTerm3, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest4);
 		testTerm3.addClass(currentUser, class4);
-		main.addClassInstance(class4);
+		main.addClassInstance(currentUser, class4);
 	}
 
 	@Test
@@ -272,9 +272,28 @@ class MainTest
 		
 		ClassInstance duplicatedClass = class1.getDeepCopy(currentUser);
 		
-		main.addClassInstance(duplicatedClass);
+		main.addClassInstance(currentUser, duplicatedClass);
 		assertEquals(4, classInstances.size());
 		
+		
+		DepartmentHead deptHeadTest = new DepartmentHead(" ", " ", " ");
+		Department phonyDept = new Department(deptHeadTest, "not real");
+		deptHeadTest.setDepartment(phonyDept);
+		
+		DepartmentHead fakedeptHead = new DepartmentHead("Alison Conelly", "FrenchGal", "Oui0ui");
+		Department fakedeptTest = new Department(fakedeptHead, "French");
+		Instructor instructorTest = new Instructor("Allison Conelly", fakedeptTest);
+		Room roomTest = new Room("Crounse", "307");
+		ArrayList<String> tagArray = new ArrayList<String>();
+		
+		tagArray.add("E3");
+		tagArray.add("L");
+		Term termTest = new Term("Spring", 2025);
+		//Course courseTest = new Course("FRE270", "Group Conversation", tagArray);
+		ClassInstance classInstance5 = new ClassInstance("FRE270", "Group Conversation", tagArray, termTest, instructorTest, "TR 9:40AM - 12:10PM", roomTest, fakedeptTest);
+		
+		main.addClassInstance(deptHeadTest, classInstance5);
+		assertEquals(4, classInstances.size());
 		
 	}
 	

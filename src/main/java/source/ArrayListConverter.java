@@ -94,7 +94,7 @@ public class ArrayListConverter extends Converter
 			main.addRoom(room);
 			main.addTerm(loadDataPermissions, term);
 			//main.addCourse(course);
-			main.addClassInstance(fullClass);
+			main.addClassInstance(loadDataPermissions, fullClass);
 		}
 		
 	}

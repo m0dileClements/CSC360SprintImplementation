@@ -60,7 +60,7 @@ class ArrayListConverterTest
 		
 		class1 = new ClassInstance("FRE270", "Group Conversation", tagArray, testTerm, instructorTest, "TR 9:40AM - 12:10PM", roomTest, deptTest);
 		testTerm.addClass(createPermissions, class1);
-		main.addClassInstance(class1);
+		main.addClassInstance(createPermissions, class1);
 		
 		
 		DepartmentHead deptHeadTest2 = new DepartmentHead("HeadWoman", "BossBabe", "IamAw3some");
@@ -82,7 +82,7 @@ class ArrayListConverterTest
 		
 		class2 = new ClassInstance("Bio210", "Environmental Science", tags2, testTerm, instructorTest2, "MWF 10:20AM - 12:40PM", roomTest2, deptTest2);
 		testTerm.addClass(createPermissions, class2);
-		main.addClassInstance(class2);
+		main.addClassInstance(createPermissions, class2);
 		
 		DepartmentHead deptHeadTest3 = new DepartmentHead("HeadMan", "BigBos", "IHaveSevereImposterSyndrome");
 		Department deptTest3 = new Department(deptHeadTest3, "biology");
@@ -106,7 +106,7 @@ class ArrayListConverterTest
 		
 		class3 = new ClassInstance("DSC", "Impacts of Analytics on Human body", tags3, testTerm2, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest3);
 		testTerm2.addClass(createPermissions, class3);
-		main.addClassInstance(class3);
+		main.addClassInstance(createPermissions, class3);
 		
 		//DepartmentHead deptHeadTest4 = new DepartmentHead("TA", "ImJustAGraduateStudent", "Im drowning in work");
 		//Department deptTest4 = new Department(deptHeadTest4, "dlm");
@@ -127,7 +127,7 @@ class ArrayListConverterTest
 		
 		class4 = new ClassInstance("DLM110b", "How to cope with college", tags4, testTerm3, instructorTest3, "MWF 10:20AM - 12:40PM", roomTest3, deptTest3);
 		testTerm3.addClass(createPermissions, class4);
-		main.addClassInstance(class4);
+		main.addClassInstance(createPermissions, class4);
 		
 		
 	}

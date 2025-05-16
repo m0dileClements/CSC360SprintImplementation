@@ -7,7 +7,7 @@ public class Student extends User {
 			//TODO super here
 			super(name, loginInformation, password);
 			this.canFinalize = false;
-			this.canReadPendingInfo = false;
+			this.canReadPendingInfo = true;
 			this.canEdit = false;
 			this.canCreate = false;
 			this.canDelete = false;

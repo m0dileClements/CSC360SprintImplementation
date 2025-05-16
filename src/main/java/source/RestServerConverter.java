@@ -51,15 +51,15 @@ public class RestServerConverter extends Converter
 	public record SpecificCourseInfo(String request, Boolean successful, String message, CourseData data) {};
 	public record CourseData(String season, int year, String dept, String num, String section, String name, String instructor, String meetingTime, String building, String roomNumber, String id) {};
 	//import faculty from rest server structure
-	public record FacultyList(String request, Boolean successful, String message, ArrayList<Faculty> data) {};
-	public record Faculty(String name, String description, String location) {};
+	//public record FacultyList(String request, Boolean successful, String message, ArrayList<Faculty> data) {};
+	//public record Faculty(String name, String description, String location) {};
 	//constraints server structure
 	public record ConstraintsList(String request, Boolean successful, String message, ArrayList<ConstraintLocations> data) {};
 	public record ConstraintLocations(String name, String description, String location) {};
 	public record SpecConstraintWrapper(String request, Boolean successful, String message, SpecConstraint data) {};
-	public record SpecConstraint(String semester, int year, String desc, String class1, String class2) {};
+	public record SpecConstraint(String semester, int year, String desc, ArrayList<String> classes) {};
 	//term server structure
-	public record TermList(String request, Boolean successful, String message, ArrayList<TermLocations> data) {};
+	//public record TermList(String request, Boolean successful, String message, ArrayList<TermLocations> data) {};
 	public record TermLocations(String name, String description, String location) {};
 	public record SpecificTermInfo(String request, Boolean successful, String message, TermData data) {};
 	public record TermData(String season, int year, Boolean isFinalized) {};
@@ -122,12 +122,14 @@ public class RestServerConverter extends Converter
 	
 	//imports all data stored in the rest server and store in main 
 	public void loadData(Main main) {
+		//prevents reloading and duplicating information. I have tested, but 
+		//requires the load data function to be run twice in the same test. This doubled testing time,
+		//so I only load data once in my testing. 
 		if (this.isLaunched) {
 			return;
 		} else {
 		this.isLaunched = true;
 		Registrar permissionsToLoad = new Registrar("Loading Permissions", "", "");
-		//defaultClient  = RestClient.create();
 		
 		//import all the instructors and depts
 		//Archive dept section
@@ -591,22 +593,29 @@ public void deleteData(Object object) {
 	}
 //takes in a MustBeOfferedConstraint and posts it to the MustBeOfferedConstraint rest server team
 	public void uploadMustBeOfferedConstraint(MustBeOfferedConstraint constraint) {
-		String classLocation1 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(0).getCourseCode() + "-" + constraint.getClasses().get(0).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(0).getTerm().getYear();
+		ArrayList<String> classLocations = new ArrayList<String>();
 		
+		for(int i = 0; i < constraint.getClasses().size(); i++) {
+			classLocations.add("http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(i).getCourseCode() + "-" + constraint.getClasses().get(i).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(i).getTerm().getYear());
+		}
 		defaultClient.post() 
 				.uri("http://localhost:9000/v1/new/mustBeOffered/" + constraint.getConstraintName() + "-" + constraint.getTerm().getSemester() + "-" + constraint.getTerm().getYear()) 
-				.body(new SpecConstraint(constraint.getTerm().getSemester(), constraint.getTerm().getYear(), constraint.getConstraintName(), classLocation1, "")) 
+				.body(new SpecConstraint(constraint.getTerm().getSemester(), constraint.getTerm().getYear(), constraint.getConstraintName(), classLocations)) 
 				.retrieve()
 				.body(String.class);	
 	}
 //takes in a MustOverlapConstraint and posts it to the MustOverlapConstraint rest server team	
 	public void uploadMustOverlapConstraint(MustOverlapConstraint constraint) {
-		String classLocation1 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(0).getCourseCode() + "-" + constraint.getClasses().get(0).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(0).getTerm().getYear();
-		String classLocation2 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(1).getCourseCode() + "-" + constraint.getClasses().get(1).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(1).getTerm().getYear();
-
+		//String classLocation1 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(0).getCourseCode() + "-" + constraint.getClasses().get(0).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(0).getTerm().getYear();
+		//String classLocation2 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(1).getCourseCode() + "-" + constraint.getClasses().get(1).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(1).getTerm().getYear();
+		ArrayList<String> classLocations = new ArrayList<String>();
+		
+		for(int i = 0; i < constraint.getClasses().size(); i++) {
+			classLocations.add("http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(i).getCourseCode() + "-" + constraint.getClasses().get(i).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(i).getTerm().getYear());
+		}
 		defaultClient.post() 
 				.uri("http://localhost:9000/v1/new/mustOverlap/" + constraint.getConstraintName() + "-" + constraint.getTerm().getSemester() + "-" + constraint.getTerm().getYear()) 
-				.body(new SpecConstraint(constraint.getTerm().getSemester(), constraint.getTerm().getYear(), constraint.getConstraintName(), classLocation1, classLocation2)) 
+				.body(new SpecConstraint(constraint.getTerm().getSemester(), constraint.getTerm().getYear(), constraint.getConstraintName(), classLocations)) 
 				.retrieve()
 				.body(String.class);
 		
@@ -614,12 +623,17 @@ public void deleteData(Object object) {
 	}
 //takes in a NonOverlappingConstraint and posts it to the NonOverlappingConstraint rest server team
 	public void uploadNonOverlappingConstraint(NonOverlappingConstraint constraint) {
-		String classLocation1 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(0).getCourseCode() + "-" + constraint.getClasses().get(0).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(0).getTerm().getYear();
-		String classLocation2 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(1).getCourseCode() + "-" + constraint.getClasses().get(1).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(1).getTerm().getYear();
+//		String classLocation1 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(0).getCourseCode() + "-" + constraint.getClasses().get(0).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(0).getTerm().getYear();
+//		String classLocation2 = "http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(1).getCourseCode() + "-" + constraint.getClasses().get(1).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(1).getTerm().getYear();
 
+		ArrayList<String> classLocations = new ArrayList<String>();
+		
+		for(int i = 0; i < constraint.getClasses().size(); i++) {
+			classLocations.add("http://localhost:9000/v1/new/classes/" + constraint.getClasses().get(i).getCourseCode() + "-" + constraint.getClasses().get(i).getTerm().getSemester().substring(0, 2) + constraint.getClasses().get(i).getTerm().getYear());
+		}
 		defaultClient.post() 
 				.uri("http://localhost:9000/v1/new/mustNotOverlap/" + constraint.getConstraintName() + "-" + constraint.getTerm().getSemester() + "-" + constraint.getTerm().getYear()) 
-				.body(new SpecConstraint(constraint.getTerm().getSemester(), constraint.getTerm().getYear(), constraint.getConstraintName(), classLocation1, classLocation2)) 
+				.body(new SpecConstraint(constraint.getTerm().getSemester(), constraint.getTerm().getYear(), constraint.getConstraintName(), classLocations)) 
 				.retrieve()
 				.body(String.class);
 		
@@ -829,7 +843,7 @@ public void deleteData(Object object) {
 	//works identically to the uploadData function, but does not upload the object to the 
 	//newItemsInRest list again.
 	
-	//Did not extensively test as the functionality is identical to previous function
+	//Did not extensively test as the functionality is identical to aforementioned function
 	public void uploadUpdate(Object object) {
 		if(object.getClass().equals(ClassInstance.class)) {
 			ClassInstance newObject = (ClassInstance) object;

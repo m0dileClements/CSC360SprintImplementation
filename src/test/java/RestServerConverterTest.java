@@ -385,8 +385,8 @@ class RestServerConverterTest
 		assertEquals("Spring", constInfo.semester());
 		assertEquals(2025, constInfo.year());
 		assertEquals("must offer", constInfo.desc());
-		assertEquals("http://localhost:9000/v1/new/classes/Bio110-Sp2025", constInfo.class1());
-		assertEquals("", constInfo.class2());
+		assertEquals("http://localhost:9000/v1/new/classes/Bio110-Sp2025", constInfo.classes().get(0));
+		
 		
 		assertEquals(2, testConverter.getNewItemsInRest().size());
 	}
@@ -442,8 +442,8 @@ class RestServerConverterTest
 		assertEquals("Spring", constInfo.semester());
 		assertEquals(2025, constInfo.year());
 		assertEquals("must overlap", constInfo.desc());
-		assertEquals("http://localhost:9000/v1/new/classes/Bio110-Sp2025", constInfo.class1());
-		assertEquals("http://localhost:9000/v1/new/classes/Bio210-Sp2025", constInfo.class2());
+		assertEquals("http://localhost:9000/v1/new/classes/Bio110-Sp2025", constInfo.classes().get(0));
+		assertEquals("http://localhost:9000/v1/new/classes/Bio210-Sp2025", constInfo.classes().get(1));
 	
 		assertEquals(2, testConverter.getNewItemsInRest().size());
 	}
@@ -499,8 +499,8 @@ class RestServerConverterTest
 		assertEquals("Spring", constInfo.semester());
 		assertEquals(2025, constInfo.year());
 		assertEquals("must not overlap", constInfo.desc());
-		assertEquals("http://localhost:9000/v1/new/classes/Bio110-Sp2025", constInfo.class1());
-		assertEquals("http://localhost:9000/v1/new/classes/Bio210-Sp2025", constInfo.class2());
+		assertEquals("http://localhost:9000/v1/new/classes/Bio110-Sp2025", constInfo.classes().get(0));
+		assertEquals("http://localhost:9000/v1/new/classes/Bio210-Sp2025", constInfo.classes().get(1));
 	
 		assertEquals(2, testConverter.getNewItemsInRest().size());
 	}

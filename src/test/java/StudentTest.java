@@ -32,7 +32,7 @@ class StudentTest
 	@Test
 	void testCanReadPendingInfo()
 	{
-		assertEquals(false, student.getCanReadPendingInfo());
+		assertEquals(true, student.getCanReadPendingInfo());
 		
 	}
 	
