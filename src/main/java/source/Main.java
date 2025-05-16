@@ -178,6 +178,7 @@ public class Main
 		}
 		if (!alreadyExists) {
 			allUsers.add(user);
+			//currentConverter.uploadData(user);
 		}
 	}
 
